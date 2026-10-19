@@ -1,0 +1,64 @@
+:root {
+  /* Brand Colors from Chef Fergany & Reference Board */
+  --color-primary: #F57A21;
+  --color-primary-hover: #DF6814;
+  --color-primary-soft: #FFF4EB;
+  --color-primary-border: #FCD8BD;
+  
+  --color-bg-light: #F5E9DB;
+  --color-bg-warm: #E6D2B1;
+  --color-gold: #B9914A;
+  --color-gold-soft: #FAF3E7;
+  --color-text-dark: #2C2C2C;
+  --color-text-muted: #6E6862;
+  --color-text-light: #9B948C;
+  --color-white: #FFFFFF;
+  --color-page-bg: #F8F3EC;
+  
+  --color-success: #2E7D32;
+  --color-success-bg: #E8F5E9;
+  --color-danger: #C62828;
+  --color-danger-bg: #FFEBEE;
+  
+  /* Typography */
+  --font-arabic: 'Cairo', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-latin: 'Poppins', system-ui, -apple-system, sans-serif;
+  
+  /* Spacing */
+  --space-2xs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  
+  /* Radii */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-full: 9999px;
+  
+  /* Shadows */
+  --shadow-subtle: 0 2px 8px rgba(44, 44, 44, 0.04);
+  --shadow-card: 0 4px 16px rgba(44, 44, 44, 0.06);
+  --shadow-card-hover: 0 8px 24px rgba(245, 122, 33, 0.15);
+  --shadow-modal: 0 16px 40px rgba(0, 0, 0, 0.22);
+  --shadow-bottom-nav: 0 -4px 20px rgba(44, 44, 44, 0.08);
+  --shadow-floating-cart: 0 8px 24px rgba(245, 122, 33, 0.35);
+  
+  /* Layout Dimensions */
+  --container-max-width: 1440px;
+  --container-padding-mobile: 16px;
+  --container-padding-tablet: 24px;
+  --container-padding-desktop: 32px;
+  --container-padding-wide: 48px;
+  --mobile-width: 440px;
+  --bottom-nav-height: 64px;
+  --top-header-height: 60px;
+  --desktop-header-height: 84px;
+  --top-bar-height: 40px;
+  --transition-fast: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
