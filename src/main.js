@@ -503,6 +503,7 @@ class ChefApp {
   // =========================================================================
   renderHomeTab() {
     const s = store.state;
+    const featuredProducts = PRODUCTS.filter((p) => p.isFeatured || p.isPopular || p.category === 'offers');
     let categoryFiltered = PRODUCTS;
     if (s.selectedCategory !== 'all') {
       categoryFiltered = categoryFiltered.filter((p) => p.category === s.selectedCategory);
