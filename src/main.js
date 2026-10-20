@@ -315,15 +315,6 @@ class ChefApp {
             </div>
 
             <div class="top-bar-actions">
-              <a href="tel:01040925170" class="top-bar-link">
-                <span>📞</span>
-                <span style="direction:ltr; font-family:var(--font-latin); font-weight:700;">010 4092 5170</span>
-              </a>
-
-              <a href="https://wa.me/201040925170" target="_blank" class="top-bar-link whatsapp-link">
-                <span>💬</span>
-                <span>${this.t('واتساب المطبخ', 'WhatsApp')}</span>
-              </a>
 
               <button class="top-bar-lang-btn" id="btn-lang-toggle" title="${this.t('تغيير اللغة', 'Switch Language')}">
                 ${s.lang === 'ar' ? 'English' : 'عربي'}
@@ -378,12 +369,7 @@ class ChefApp {
                     <span>${this.t('العروض المميزة', 'Offers')}</span>
                   </button>
                 </li>
-                <li>
-                  <button class="desktop-nav-link" data-nav="chefStory">
-                    <span>👨‍🍳</span>
-                    <span>${this.t('عن الشيف', 'Meet the Chef')}</span>
-                  </button>
-                </li>
+
                 <li>
                   <button class="desktop-nav-link" data-nav="branches">
                     <span>📍</span>
@@ -407,16 +393,6 @@ class ChefApp {
 
             <!-- Desktop Action Buttons -->
             <div class="desktop-actions-group">
-              <button class="branch-select-btn" id="btn-select-branch" title="${this.t('تغيير الفرع أو التوصيل', 'Change Branch or Delivery')}">
-                <span class="loc-icon">📍</span>
-                <span>${this.t('الهرم - شارع العروبة', 'El Haram - Orouba')}</span>
-                <span style="font-size:0.75rem; color:var(--color-primary);">▾</span>
-              </button>
-
-              <button class="desktop-action-btn" data-nav="orders" title="${this.t('متابعة الطلبات', 'My Orders')}">
-                <span>📋</span>
-                <span>${this.t('طلباتي', 'Orders')}</span>
-              </button>
 
               <button class="desktop-action-btn" data-nav="profile" title="${this.t('الملف الشخصي', 'Profile')}">
                 <span>👤</span>
@@ -512,7 +488,11 @@ class ChefApp {
     if (this.quickTagFilter === 'popular') {
       categoryFiltered = categoryFiltered.filter((p) => p.isPopular);
     } else if (this.quickTagFilter === 'ready') {
-      categoryFiltered = categoryFiltered.filter((p) => p.badgeAr && (p.badgeAr.includes('تسوية') || p.badgeAr.includes('قلي')));
+      categoryFiltered = categoryFiltered.filter(
+        (p) =>
+          (p.badgeAr && (p.badgeAr.includes('تسوية') || p.badgeAr.includes('قلي'))) ||
+          (p.badgeEn && (p.badgeEn.toLowerCase().includes('ready') || p.badgeEn.toLowerCase().includes('fry')))
+      );
     } else if (this.quickTagFilter === 'casseroles') {
       categoryFiltered = categoryFiltered.filter((p) => p.category === 'casseroles');
     } else if (this.quickTagFilter === 'offers') {
@@ -570,7 +550,7 @@ class ChefApp {
                   <span>${this.t('تغليف حراري معقم', 'Vacuum Sealed Packaging')}</span>
                 </div>
                 <div class="trust-badge-item">
-                  <span class="t-icon">🚀</span>
+                  <span class="t-icon">🏍️</span>
                   <span>${this.t('توصيل حراري فوري', 'Express Hot Delivery')}</span>
                 </div>
               </div>
@@ -610,18 +590,9 @@ class ChefApp {
                   <h3 class="chef-chic-name">${this.t('الشيف محمد فرجاني', 'Chef Mohamed Fergany')}</h3>
                   <span class="chef-chic-title">${this.t('صاحب ومؤسس مطابخ ومعارض فرجاني للحوم الفاخرة', 'Founder of Fergany Gourmet Meats & Kitchens')}</span>
 
-                  <p class="chef-chic-quote">
-                    "${this.t(
-                      'السر مش بس في التتبيلة، السر في أمانة اختيار اللحم البلدي 100% بدون أي لحوم مستوردة.. بنقدملكم سفرة تشرف وتبيض الوش في كل عزومة.',
-                      'Our secret is uncompromising honesty: 100% fresh Egyptian baladi meat with handcrafted marinades that honor your family table.'
-                    )}"
-                  </p>
 
-                  <div class="chef-chic-tags-row">
-                    <span class="chef-mini-tag">🥩 ${this.t('بلدي طازة 100%', '100% Fresh Baladi')}</span>
-                    <span class="chef-mini-tag">✨ ${this.t('تتبيلات سرية', 'Secret Spices')}</span>
-                    <span class="chef-mini-tag">🏆 ${this.t('تجهيز عزومات كبرى', 'Royal Banquets')}</span>
-                  </div>
+
+
 
                   <div class="chef-chic-action-bar">
                     <button class="chef-chic-btn-story" id="hero-scroll-to-chef">
@@ -667,7 +638,7 @@ class ChefApp {
             </div>
 
             <div class="value-prop-card">
-              <div class="value-prop-icon">🚀</div>
+              <div class="value-prop-icon">🏍️</div>
               <div>
                 <h4 class="value-prop-title">${this.t('توصيل حراري سريع', 'Fast Delivery')}</h4>
                 <p class="value-prop-desc">${this.t('تغليف محكم يحافظ على برودة وجودة الصنف', 'Hygienic temperature-safe boxes')}</p>
@@ -874,7 +845,7 @@ class ChefApp {
                 <p>${s.lang === 'ar' ? pkg.descAr : pkg.descEn}</p>
               </div>
               <div class="calc-pricing-badge">
-                <span class="calc-old-price">${pkg.origPrice} ج.م</span>
+                <span class="calc-old-price">${pkg.origPrice} ${this.t('ج.م', 'EGP')}</span>
                 <span class="calc-new-price">${pkg.dealPrice} ${this.t('ج.م', 'EGP')}</span>
               </div>
             </div>
@@ -888,13 +859,13 @@ class ChefApp {
                   <div class="calc-item-card">
                     <img src="${p.image}" alt="${s.lang === 'ar' ? p.titleAr : p.titleEn}" />
                     <div class="calc-item-info" style="flex:1;">
-                      <h4>${s.lang === 'ar' ? item.labelAr : item.labelAr}</h4>
-                      <span>${p.price} ج.م (${s.lang === 'ar' ? p.unitAr : p.unitEn})</span>
+                      <h4>${s.lang === 'ar' ? item.labelAr : item.labelEn}</h4>
+                      <span>${p.price} ${this.t('ج.م', 'EGP')} (${s.lang === 'ar' ? p.unitAr : p.unitEn})</span>
                     </div>
                     <div class="calc-item-qty-stepper">
-                      <button class="calc-qty-btn" data-calc-item="${item.productId}" data-calc-dir="-1" title="تقليل">-</button>
+                      <button class="calc-qty-btn" data-calc-item="${item.productId}" data-calc-dir="-1" title="${this.t('تقليل', 'Decrease')}">-</button>
                       <span class="calc-qty-num">${item.qty}</span>
-                      <button class="calc-qty-btn" data-calc-item="${item.productId}" data-calc-dir="1" title="زيادة">+</button>
+                      <button class="calc-qty-btn" data-calc-item="${item.productId}" data-calc-dir="1" title="${this.t('زيادة', 'Increase')}">+</button>
                     </div>
                   </div>
                 `;
@@ -912,7 +883,7 @@ class ChefApp {
               <button class="calc-add-all-btn" id="btn-add-feast-package">
                 <span>🛒</span>
                 <span>${this.t('إضافة تشكيلة العزومة بالكامل للسلة', 'Add Full Feast Package to Cart')}</span>
-                <span>(${pkg.dealPrice} ج.م)</span>
+                <span>(${pkg.dealPrice} ${this.t('ج.م', 'EGP')})</span>
               </button>
             </div>
           </div>
@@ -1024,7 +995,7 @@ class ChefApp {
           </h3>
 
           <span class="product-card-en-title">
-            ${product.titleEn}
+            ${s.lang === 'ar' ? product.titleEn : product.titleAr}
           </span>
 
           <p class="product-card-desc">
@@ -1438,7 +1409,7 @@ class ChefApp {
           </div>
           <div style="flex:1;">
             <h2 style="font-size:1.3rem; font-weight:900; margin-bottom:4px;">${u.name}</h2>
-            <span style="font-size:0.9rem; color:var(--color-text-muted); display:block; direction:ltr; text-align:right;">${u.phone}</span>
+            <span style="font-size:0.9rem; color:var(--color-text-muted); display:block;"><bdi dir="ltr" style="direction:ltr; unicode-bidi:isolate; display:inline-block;">${u.phone}</bdi></span>
             <span style="font-size:0.8rem; color:var(--color-text-light);">${u.street}</span>
           </div>
           <button id="btn-edit-user-profile" class="desktop-action-btn">
@@ -1447,28 +1418,48 @@ class ChefApp {
         </div>
 
         <!-- QUICK METRICS ROW -->
-        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; margin-bottom:28px;">
-          <div style="background:var(--color-white); border-radius:var(--radius-lg); padding:18px; text-align:center; border:1px solid var(--color-bg-warm); cursor:pointer;" id="profile-open-wishlist">
-            <span style="font-size:1.8rem; display:block; margin-bottom:4px;">❤️</span>
-            <span style="font-size:0.85rem; font-weight:800; color:var(--color-text-dark); display:block;">${this.t('قائمة المفضلة', 'Wishlist')}</span>
+        <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:14px; margin-bottom:28px;">
+          <div style="background:var(--color-white); border-radius:var(--radius-lg); padding:16px; text-align:center; border:1px solid var(--color-bg-warm); cursor:pointer; transition:transform 0.2s;" id="profile-open-orders" data-nav="orders">
+            <span style="font-size:1.7rem; display:block; margin-bottom:4px;">📋</span>
+            <span style="font-size:0.85rem; font-weight:800; color:var(--color-text-dark); display:block;">${this.t('طلباتي', 'My Orders')}</span>
+            <span style="font-size:0.95rem; color:var(--color-primary); font-weight:900;">(${s.orders ? s.orders.length : 0})</span>
+          </div>
+
+          <div style="background:var(--color-white); border-radius:var(--radius-lg); padding:16px; text-align:center; border:1px solid var(--color-bg-warm); cursor:pointer;" id="profile-open-wishlist">
+            <span style="font-size:1.7rem; display:block; margin-bottom:4px;">❤️</span>
+            <span style="font-size:0.85rem; font-weight:800; color:var(--color-text-dark); display:block;">${this.t('المفضلة', 'Wishlist')}</span>
             <span style="font-size:0.95rem; color:var(--color-primary); font-weight:900;">(${s.wishlist.length})</span>
           </div>
 
-          <div style="background:var(--color-white); border-radius:var(--radius-lg); padding:18px; text-align:center; border:1px solid var(--color-bg-warm);">
-            <span style="font-size:1.8rem; display:block; margin-bottom:4px;">👛</span>
-            <span style="font-size:0.85rem; font-weight:800; color:var(--color-text-dark); display:block;">${this.t('رصيد المحفظة', 'Wallet Balance')}</span>
-            <span style="font-size:0.95rem; color:var(--color-primary); font-weight:900;">150.00 ج.م</span>
+          <div style="background:var(--color-white); border-radius:var(--radius-lg); padding:16px; text-align:center; border:1px solid var(--color-bg-warm);">
+            <span style="font-size:1.7rem; display:block; margin-bottom:4px;">👛</span>
+            <span style="font-size:0.85rem; font-weight:800; color:var(--color-text-dark); display:block;">${this.t('المحفظة', 'Wallet')}</span>
+            <span style="font-size:0.95rem; color:var(--color-primary); font-weight:900;">150 ${this.t('ج.م', 'EGP')}</span>
           </div>
 
-          <div style="background:var(--color-white); border-radius:var(--radius-lg); padding:18px; text-align:center; border:1px solid var(--color-bg-warm); cursor:pointer;" id="profile-open-coupons">
-            <span style="font-size:1.8rem; display:block; margin-bottom:4px;">🎁</span>
-            <span style="font-size:0.85rem; font-weight:800; color:var(--color-text-dark); display:block;">${this.t('الكوبونات المتاحة', 'Active Coupons')}</span>
+          <div style="background:var(--color-white); border-radius:var(--radius-lg); padding:16px; text-align:center; border:1px solid var(--color-bg-warm); cursor:pointer;" id="profile-open-coupons">
+            <span style="font-size:1.7rem; display:block; margin-bottom:4px;">🎁</span>
+            <span style="font-size:0.85rem; font-weight:800; color:var(--color-text-dark); display:block;">${this.t('الكوبونات', 'Coupons')}</span>
             <span style="font-size:0.95rem; color:var(--color-primary); font-weight:900;">(${AVAILABLE_COUPONS.length})</span>
           </div>
         </div>
 
         <!-- SETTINGS MENU LIST -->
         <div style="background:var(--color-white); border-radius:var(--radius-xl); overflow:hidden; border:1px solid var(--color-bg-warm); box-shadow:var(--shadow-subtle);">
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:18px 22px; border-bottom:1px solid var(--color-bg-warm); cursor:pointer; background:rgba(245, 122, 33, 0.04);" id="menu-my-orders" data-nav="orders">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <span style="font-size:1.3rem;">📋</span>
+              <div>
+                <span style="font-weight:800; font-size:0.95rem; display:block;">${this.t('طلباتي وفواتيري السابقة', 'My Orders & Invoices')}</span>
+                <span style="font-size:0.78rem; color:var(--color-text-muted);">${this.t('عرض وتتبع حالة طلباتك الحالية والسابقة', 'Track active orders and previous receipts')}</span>
+              </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="background:var(--color-primary-soft); color:var(--color-primary); font-weight:800; font-size:0.8rem; padding:3px 10px; border-radius:var(--radius-full);">${s.orders ? s.orders.length : 0} ${this.t('طلب', 'orders')}</span>
+              <span style="color:var(--color-primary); font-weight:800;">←</span>
+            </div>
+          </div>
+
           <div style="display:flex; justify-content:space-between; align-items:center; padding:18px 22px; border-bottom:1px solid var(--color-bg-warm); cursor:pointer;" id="menu-lang-switch">
             <div style="display:flex; align-items:center; gap:12px;">
               <span style="font-size:1.3rem;">🌐</span>
@@ -1498,15 +1489,15 @@ class ChefApp {
               <span style="font-size:1.3rem;">💬</span>
               <span style="font-weight:800; font-size:0.95rem;">${this.t('خدمة عملاء المطبخ عبر واتساب', 'Kitchen Support via WhatsApp')}</span>
             </div>
-            <span style="color:#25D366; font-weight:800; font-size:0.9rem;">01040925170</span>
+            <span style="color:#25D366; font-weight:800; font-size:0.9rem;"><bdi dir="ltr" style="direction:ltr; unicode-bidi:isolate; display:inline-block;">+201040925170</bdi></span>
           </a>
 
-          <a href="tel:01040925170" style="display:flex; justify-content:space-between; align-items:center; padding:18px 22px; text-decoration:none; color:inherit;">
+          <a href="tel:+201040925170" style="display:flex; justify-content:space-between; align-items:center; padding:18px 22px; text-decoration:none; color:inherit;">
             <div style="display:flex; align-items:center; gap:12px;">
               <span style="font-size:1.3rem;">📞</span>
               <span style="font-weight:800; font-size:0.95rem;">${this.t('اتصال هاتفي مباشر لطلب الوجبات والعزومات', 'Call Kitchen Directly')}</span>
             </div>
-            <span style="color:var(--color-primary); font-weight:800; font-size:0.9rem;">اتصل الآن</span>
+            <span style="color:var(--color-primary); font-weight:800; font-size:0.9rem;">${this.t('اتصل الآن', 'Call Now')}</span>
           </a>
         </div>
       </div>
@@ -1574,11 +1565,11 @@ class ChefApp {
               </div>
               <div class="footer-contact-item">
                 <span class="f-icon">📞</span>
-                <span><a href="tel:01040925170" style="color:#FFF; text-decoration:none; font-weight:800; direction:ltr;">010 4092 5170</a></span>
+                <span><a href="tel:+201040925170" style="color:#FFF; text-decoration:none; font-weight:800;"><bdi dir="ltr" style="direction:ltr; unicode-bidi:isolate; display:inline-block;">+201040925170</bdi></a></span>
               </div>
               <div class="footer-contact-item">
                 <span class="f-icon">💬</span>
-                <span><a href="https://wa.me/201040925170" target="_blank" style="color:#25D366; text-decoration:none; font-weight:800;">010 4092 5170 (واتساب)</a></span>
+                <span><a href="https://wa.me/201040925170" target="_blank" style="color:#25D366; text-decoration:none; font-weight:800;"><bdi dir="ltr" style="direction:ltr; unicode-bidi:isolate; display:inline-block;">+201040925170</bdi> <span>(${this.t('واتساب', 'WhatsApp')})</span></a></span>
               </div>
               <div class="footer-contact-item">
                 <span class="f-icon">⏱️</span>
@@ -1596,10 +1587,9 @@ class ChefApp {
 
               <div class="footer-payment-badges">
                 <span style="font-size:0.75rem; color:#9E9285; margin-inline-end:6px;">${this.t('طرق الدفع المعتمدة:', 'Accepted Payments:')}</span>
-                <span class="payment-pill">💵 كاش عند الاستلام</span>
-                <span class="payment-pill">⚡ إنستاباي InstaPay</span>
-                <span class="payment-pill">📱 فودافون كاش</span>
-                <span class="payment-pill">💳 فيزا / ماستركارد</span>
+                <span class="payment-pill">💵 ${this.t('كاش عند الاستلام', 'Cash on Delivery')}</span>
+                <span class="payment-pill">⚡ ${this.t('إنستاباي InstaPay', 'InstaPay')}</span>
+                <span class="payment-pill">📱 ${this.t('فودافون كاش', 'Vodafone Cash')}</span>
               </div>
             </div>
           </div>
@@ -1741,7 +1731,7 @@ class ChefApp {
                 ${s.lang === 'ar' ? product.titleAr : product.titleEn}
               </h2>
               <span style="font-size:0.8rem; color:var(--color-text-light); display:block; margin-bottom:10px; font-family:var(--font-latin);">
-                ${product.titleEn}
+                ${s.lang === 'ar' ? product.titleEn : product.titleAr}
               </span>
 
               <p style="font-size:0.85rem; color:var(--color-text-muted); line-height:1.55; margin-bottom:14px;">
@@ -1802,7 +1792,7 @@ class ChefApp {
                                 <input type="radio" name="opt_${optGroup.id}" value="${choice.id}" data-extra="${choice.extraPrice}" ${isDefault ? 'checked' : ''} />
                                 <span>${s.lang === 'ar' ? choice.nameAr : choice.nameEn}</span>
                               </div>
-                              ${choice.extraPrice > 0 ? `<span class="choice-extra-price">+${choice.extraPrice} ج.م</span>` : ''}
+                              ${choice.extraPrice > 0 ? `<span class="choice-extra-price">+${choice.extraPrice} ${this.t('ج.م', 'EGP')}</span>` : ''}
                             </label>
                           `;
                           })
@@ -1828,7 +1818,7 @@ class ChefApp {
 
                 <button class="btn-primary-block" style="flex:1;" id="modal-add-to-cart-btn" data-product-id="${product.id}">
                   <span>${this.t('أضف إلى السلة', 'Add to Cart')}</span>
-                  <span id="modal-total-btn-price">(${product.price}.00 ج.م)</span>
+                  <span id="modal-total-btn-price">(${product.price}.00 ${this.t('ج.م', 'EGP')})</span>
                 </button>
               </div>
             </div>
@@ -1865,7 +1855,7 @@ class ChefApp {
 
               <div>
                 <label style="font-size:0.82rem; font-weight:800; display:block; margin-bottom:4px;">${this.t('رقم الهاتف (للتواصل وتأكيد الطلب)', 'Phone Number (Required)')} *</label>
-                <input type="tel" name="phone" value="${u.phone}" required style="width:100%; direction:ltr; text-align:right;" />
+                <input type="tel" name="phone" value="${u.phone}" required style="width:100%; direction:ltr; text-align:${s.lang === 'ar' ? 'right' : 'left'};" />
               </div>
 
               <div>
@@ -1891,7 +1881,7 @@ class ChefApp {
                     ${DELIVERY_ZONES.map(
                       (z) => `
                       <option value="${z.id}" ${s.deliveryZoneId === z.id ? 'selected' : ''}>
-                        ${s.lang === 'ar' ? z.nameAr : z.nameEn} (${z.fee} ج.م - ${z.timeAr})
+                        ${s.lang === 'ar' ? `${z.nameAr} (${z.fee} ج.م - ${z.timeAr})` : `${z.nameEn} (${z.fee} EGP - ${z.timeAr.replace('دقيقة', 'mins')})`}
                       </option>
                     `
                     ).join('')}
@@ -1906,7 +1896,7 @@ class ChefApp {
                   : `
                 <div style="background:var(--color-primary-soft); border-radius:var(--radius-sm); padding:12px 16px; border:1px solid var(--color-primary-border); font-size:0.85rem;">
                   <strong>📍 ${this.t('عنوان الاستلام من الفرع:', 'Pickup Location:')}</strong><br />
-                  ${BRANCHES[0].addressAr}
+                  ${s.lang === 'ar' ? BRANCHES[0].addressAr : BRANCHES[0].addressEn}
                 </div>
               `
               }
@@ -1918,7 +1908,7 @@ class ChefApp {
                 </label>
                 <div class="delivery-timing-toggle">
                   <div class="timing-choice ${s.deliveryTiming === 'asap' ? 'selected' : ''}" id="choice-timing-asap">
-                    <span>🚀 ${this.t('توصيل فوري (الآن خلال 45 - 60 دقيقة)', 'Instant (Now in 45-60 mins)')}</span>
+                    <span>🏍️ ${this.t('توصيل فوري (الآن خلال 45 - 60 دقيقة)', 'Instant (Now in 45-60 mins)')}</span>
                   </div>
                   <div class="timing-choice ${s.deliveryTiming === 'scheduled' ? 'selected' : ''}" id="choice-timing-scheduled">
                     <span>📅 ${this.t('حجز مسبق لعزومة / مناسبة', 'Pre-order for a Feast')}</span>
@@ -1931,15 +1921,19 @@ class ChefApp {
                       ${(() => {
                         const now = new Date();
                         const arabicDays = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+                        const englishDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
                         const arabicMonths = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+                        const englishMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
                         const options = [];
                         for (let i = 0; i < 7; i++) {
                           const d = new Date(now.getTime() + i * 24 * 60 * 60 * 1000);
-                          const dayName = arabicDays[d.getDay()];
-                          const monthName = arabicMonths[d.getMonth()];
-                          const labelAr = i === 0 ? `اليوم (${dayName} ${d.getDate()} ${monthName})` : i === 1 ? `غداً (${dayName} ${d.getDate()} ${monthName})` : `${dayName} ${d.getDate()} ${monthName}`;
+                          const dayName = s.lang === 'ar' ? arabicDays[d.getDay()] : englishDays[d.getDay()];
+                          const monthName = s.lang === 'ar' ? arabicMonths[d.getMonth()] : englishMonths[d.getMonth()];
+                          const label = s.lang === 'ar'
+                            ? (i === 0 ? `اليوم (${dayName} ${d.getDate()} ${monthName})` : i === 1 ? `غداً (${dayName} ${d.getDate()} ${monthName})` : `${dayName} ${d.getDate()} ${monthName}`)
+                            : (i === 0 ? `Today (${dayName} ${d.getDate()} ${monthName})` : i === 1 ? `Tomorrow (${dayName} ${d.getDate()} ${monthName})` : `${dayName} ${d.getDate()} ${monthName}`);
                           const val = `${dayName} ${d.getDate()} ${monthName} ${d.getFullYear()}`;
-                          options.push(`<option value="${val}">${labelAr}</option>`);
+                          options.push(`<option value="${val}">${label}</option>`);
                         }
                         return options.join('');
                       })()}
@@ -1948,11 +1942,11 @@ class ChefApp {
                   <div>
                     <label style="font-size:0.75rem; color:var(--color-text-muted); display:block; margin-bottom:2px;">${this.t('فترة التسليم المطلوبة', 'Requested Time Slot')}</label>
                     <select name="scheduledSlot" id="select-sched-slot" style="width:100%;">
-                      <option value="12:00 - 2:00 ظهراً (تجهيز الغداء المبكر)">12:00 - 2:00 ظهراً</option>
-                      <option value="2:30 - 4:30 عصراً (غداء العزومات الأكثر طلباً)" selected>2:30 - 4:30 عصراً (غداء العزومات)</option>
-                      <option value="5:00 - 7:00 مساءً (المغرب)">5:00 - 7:00 مساءً</option>
-                      <option value="7:30 - 9:30 مساءً (عشاء العائلات)">7:30 - 9:30 مساءً (عشاء العائلات)</option>
-                      <option value="10:00 - 11:30 مساءً (طلبات مسائية)">10:00 - 11:30 مساءً</option>
+                      <option value="12:00 - 2:00 PM">${s.lang === 'ar' ? '12:00 - 2:00 ظهراً (تجهيز الغداء المبكر)' : '12:00 - 2:00 PM (Early Lunch)'}</option>
+                      <option value="2:30 - 4:30 PM" selected>${s.lang === 'ar' ? '2:30 - 4:30 عصراً (غداء العزومات الأكثر طلباً)' : '2:30 - 4:30 PM (Main Feast Lunch)'}</option>
+                      <option value="5:00 - 7:00 PM">${s.lang === 'ar' ? '5:00 - 7:00 مساءً (المغرب)' : '5:00 - 7:00 PM (Sunset / Dinner)'}</option>
+                      <option value="7:30 - 9:30 PM">${s.lang === 'ar' ? '7:30 - 9:30 مساءً (عشاء العائلات)' : '7:30 - 9:30 PM (Family Dinner)'}</option>
+                      <option value="10:00 - 11:30 PM">${s.lang === 'ar' ? '10:00 - 11:30 مساءً (طلبات مسائية)' : '10:00 - 11:30 PM (Late Evening)'}</option>
                     </select>
                   </div>
                 </div>
@@ -2010,15 +2004,25 @@ class ChefApp {
       case 'orderSuccess': {
         const order = data;
         const whatsappMsg = encodeURIComponent(
-          `*طلب جديد من موقع مطابخ الشيف فرجاني*\n` +
-            `رقم الطلب: #${order.id}\n` +
-            `الاسم: ${order.customerName}\n` +
-            `الهاتف: ${order.phone}\n` +
-            `طريقة الاستلام: ${order.fulfillmentType === 'delivery' ? 'توصيل للمنزل' : 'استلام من الفرع'}\n` +
-            `العنوان: ${order.address || 'فرع الهرم - شارع العروبة'}\n\n` +
-            `*الأصناف المطلوبة:*\n` +
-            order.items.map((i) => `• ${i.titleAr} (${i.quantity}x) = ${i.price * i.quantity} ج.م`).join('\n') +
-            `\n\nالمجموع النهائي: *${order.total} ج.م*\nطريقة الدفع: ${order.paymentMethod}\nملاحظات: ${order.notes || 'لا توجد'}`
+          s.lang === 'ar'
+            ? `*طلب جديد من موقع مطابخ الشيف فرجاني*\n` +
+                `رقم الطلب: #${order.id}\n` +
+                `الاسم: ${order.customerName}\n` +
+                `الهاتف: ${order.phone}\n` +
+                `طريقة الاستلام: ${order.fulfillmentType === 'delivery' ? 'توصيل للمنزل' : 'استلام من الفرع'}\n` +
+                `العنوان: ${order.address || 'فرع الهرم - شارع العروبة'}\n\n` +
+                `*الأصناف المطلوبة:*\n` +
+                order.items.map((i) => `• ${i.titleAr} (${i.quantity}x) = ${i.price * i.quantity} ج.م`).join('\n') +
+                `\n\nالمجموع النهائي: *${order.total} ج.م*\nطريقة الدفع: ${order.paymentMethod}\nملاحظات: ${order.notes || 'لا توجد'}`
+            : `*New Order - Chef Fergany Kitchens*\n` +
+                `Order ID: #${order.id}\n` +
+                `Name: ${order.customerName}\n` +
+                `Phone: ${order.phone}\n` +
+                `Fulfillment: ${order.fulfillmentType === 'delivery' ? 'Home Delivery' : 'Branch Pickup'}\n` +
+                `Address: ${order.address || 'El Haram Branch - El Orouba St.'}\n\n` +
+                `*Ordered Items:*\n` +
+                order.items.map((i) => `• ${i.titleEn || i.titleAr} (${i.quantity}x) = ${i.price * i.quantity} EGP`).join('\n') +
+                `\n\nTotal: *${order.total} EGP*\nPayment: ${order.paymentMethod}\nNotes: ${order.notes || 'None'}`
         );
 
         return `
@@ -2031,15 +2035,15 @@ class ChefApp {
               ${this.t(`طلب رقم #${order.id} قيد المراجعة والتجهيز الفوري`, `Order #${order.id} is being prepared now`)}
             </p>
 
-            <div style="background:var(--color-page-bg); border-radius:var(--radius-md); padding:16px; text-align:right; margin-bottom:18px; border:1px solid var(--color-bg-warm);">
+            <div style="background:var(--color-page-bg); border-radius:var(--radius-md); padding:16px; text-align:${s.lang === 'ar' ? 'right' : 'left'}; margin-bottom:18px; border:1px solid var(--color-bg-warm);">
               <div style="font-size:0.85rem; font-weight:800; color:var(--color-primary); margin-bottom:8px;">
                 ⏱️ ${this.t('الوقت المتوقع للتسليم: 35 - 50 دقيقة', 'Estimated Delivery: 35-50 mins')}
               </div>
               <div style="display:flex; justify-content:space-between; font-size:0.78rem; color:var(--color-text-dark); font-weight:700;">
-                <span style="color:var(--color-success);">✓ تم التأكيد</span>
-                <span style="color:var(--color-primary);" class="animate-pulse">🍳 قيد التجهيز</span>
-                <span style="color:var(--color-text-light);">🛵 في الطريق</span>
-                <span style="color:var(--color-text-light);">🏠 التسليم</span>
+                <span style="color:var(--color-success);">${this.t('✓ تم التأكيد', '✓ Confirmed')}</span>
+                <span style="color:var(--color-primary);" class="animate-pulse">${this.t('🍳 قيد التجهيز', '🍳 Preparing')}</span>
+                <span style="color:var(--color-text-light);">${this.t('🛵 في الطريق', '🛵 On the Way')}</span>
+                <span style="color:var(--color-text-light);">${this.t('🏠 التسليم', '🏠 Delivered')}</span>
               </div>
             </div>
 
@@ -2075,8 +2079,8 @@ class ChefApp {
 
             <div style="background:var(--color-page-bg); border-radius:var(--radius-md); padding:14px; margin-bottom:16px; font-size:0.85rem;">
               <div style="margin-bottom:6px;"><strong>${this.t('العميل:', 'Customer:')}</strong> ${order.customerName} (${order.phone})</div>
-              <div style="margin-bottom:6px;"><strong>${this.t('العنوان:', 'Address:')}</strong> ${order.address || 'استلام من الفرع'}</div>
-              <div><strong>${this.t('الفرع المسؤول:', 'Branch:')}</strong> ${order.branchNameAr}</div>
+              <div style="margin-bottom:6px;"><strong>${this.t('العنوان:', 'Address:')}</strong> ${order.address || this.t('استلام من الفرع', 'Branch Pickup')}</div>
+              <div><strong>${this.t('الفرع المسؤول:', 'Branch:')}</strong> ${s.lang === 'ar' ? (order.branchNameAr || 'فرع الهرم - شارع العروبة') : (order.branchNameEn || 'El Haram - El Orouba Branch')}</div>
             </div>
 
             <h4 style="font-size:0.95rem; font-weight:800; margin-bottom:10px;">${this.t('قائمة الأصناف:', 'Items List:')}</h4>
@@ -2089,7 +2093,7 @@ class ChefApp {
                     <img src="${it.image}" alt="" style="width:42px; height:42px; border-radius:var(--radius-xs); object-fit:cover;" />
                     <span style="font-size:0.88rem; font-weight:800;">${s.lang === 'ar' ? it.titleAr : it.titleEn} (${it.quantity}x)</span>
                   </div>
-                  <span style="font-size:0.95rem; font-weight:900; color:var(--color-primary);">${it.price * it.quantity}.00 ج.م</span>
+                  <span style="font-size:0.95rem; font-weight:900; color:var(--color-primary);">${it.price * it.quantity}.00 ${this.t('ج.م', 'EGP')}</span>
                 </div>
               `
                 )
@@ -2099,15 +2103,15 @@ class ChefApp {
             <div style="border-top:1px solid var(--color-bg-warm); padding-top:12px; font-size:0.9rem;">
               <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
                 <span>${this.t('المجموع الفرعي', 'Subtotal')}</span>
-                <span>${order.subtotal}.00 ج.م</span>
+                <span>${order.subtotal}.00 ${this.t('ج.م', 'EGP')}</span>
               </div>
               <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
                 <span>${this.t('رسوم التوصيل', 'Delivery Fee')}</span>
-                <span>${order.deliveryFee}.00 ج.م</span>
+                <span>${order.deliveryFee}.00 ${this.t('ج.م', 'EGP')}</span>
               </div>
               <div style="display:flex; justify-content:space-between; font-weight:900; font-size:1.15rem; margin-top:8px; color:var(--color-primary);">
                 <span>${this.t('الإجمالي النهائي', 'Total')}</span>
-                <span>${order.total}.00 ج.م</span>
+                <span>${order.total}.00 ${this.t('ج.م', 'EGP')}</span>
               </div>
             </div>
           </div>
@@ -2119,22 +2123,22 @@ class ChefApp {
         return `
           <div style="padding: 18px 24px 28px;">
             <div style="background:var(--color-primary-soft); border-radius:var(--radius-lg); padding:18px; border:1px solid var(--color-primary-border); margin-bottom:18px;">
-              <h3 style="font-size:1.1rem; font-weight:900; color:var(--color-primary); margin-bottom:6px;">📍 ${b.nameAr}</h3>
-              <p style="font-size:0.85rem; color:var(--color-text-dark); line-height:1.5; margin-bottom:10px;">${b.addressAr}</p>
+              <h3 style="font-size:1.1rem; font-weight:900; color:var(--color-primary); margin-bottom:6px;">📍 ${s.lang === 'ar' ? b.nameAr : b.nameEn}</h3>
+              <p style="font-size:0.85rem; color:var(--color-text-dark); line-height:1.5; margin-bottom:10px;">${s.lang === 'ar' ? b.addressAr : b.addressEn}</p>
               <div style="font-size:0.8rem; color:var(--color-text-muted); line-height:1.6;">
-                ⏱️ مواعيد العمل: ${b.hoursAr}<br />
-                🛵 مدة التوصيل التقريبية: ${b.deliveryTimeAr}<br />
-                📞 أرقام الطلبات المباشرة: 01040925170
+                ⏱️ ${this.t('مواعيد العمل:', 'Working Hours:')} ${s.lang === 'ar' ? b.hoursAr : b.hoursEn}<br />
+                🛵 ${this.t('مدة التوصيل التقريبية:', 'Estimated Delivery:')} ${s.lang === 'ar' ? b.deliveryTimeAr : b.deliveryTimeEn}<br />
+                📞 ${this.t('أرقام الطلبات المباشرة:', 'Direct Ordering Phones:')} <bdi dir="ltr" style="direction:ltr; unicode-bidi:isolate; display:inline-block; font-weight:800; color:var(--color-text-dark);">+201040925170</bdi>
               </div>
             </div>
 
-            <h4 style="font-size:0.95rem; font-weight:800; margin-bottom:10px;">${this.t('مناطق التوصيل المغطاة بالجيزة والقاهرة:', 'Delivery Coverage Zones:')}</h4>
+            <h4 style="font-size:0.95rem; font-weight:800; margin-bottom:10px;">${this.t('مناطق التوصيل المغطاة بالجيزة والقاهرة:', 'Delivery Coverage Zones & Estimated Fees:')}</h4>
             <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:18px;">
               ${DELIVERY_ZONES.map(
                 (z) => `
                 <div style="display:flex; justify-content:space-between; align-items:center; background:var(--color-page-bg); border-radius:var(--radius-sm); padding:10px 14px; font-size:0.85rem;">
                   <span>🛵 ${s.lang === 'ar' ? z.nameAr : z.nameEn}</span>
-                  <span style="font-weight:800; color:var(--color-primary);">${z.fee} ج.م (${z.timeAr})</span>
+                  <span style="font-weight:800; color:var(--color-primary);">${z.fee} ${this.t('ج.م', 'EGP')} (${s.lang === 'ar' ? z.timeAr : z.timeEn})</span>
                 </div>
               `
               ).join('')}
@@ -2142,10 +2146,10 @@ class ChefApp {
 
             <div style="display:flex; gap:12px;">
               <a href="tel:${b.phone}" class="btn-primary-block" style="flex:1; text-decoration:none;">
-                <span>📞 اتصال هاتفي</span>
+                <span>📞 ${this.t('اتصال هاتفي', 'Call Branch')}</span>
               </a>
               <a href="https://wa.me/${b.whatsapp}" target="_blank" class="whatsapp-dispatch-btn" style="flex:1; margin-top:0; text-decoration:none;">
-                <span>💬 واتساب الفرع</span>
+                <span>💬 ${this.t('واتساب الفرع', 'Branch WhatsApp')}</span>
               </a>
             </div>
           </div>
@@ -2157,20 +2161,23 @@ class ChefApp {
           <div style="padding: 20px 24px 28px;">
             <div style="text-align:center; margin-bottom:18px;">
               <img src="/assets/chef-mohamed-fergany.jpg" alt="Chef Fergany" style="width:110px; height:110px; border-radius:50%; object-fit:cover; border:3px solid var(--color-primary); margin:0 auto 10px;" />
-              <h3 style="font-size:1.25rem; font-weight:900;">الشيف محمد فرجاني</h3>
-              <span style="font-size:0.85rem; color:var(--color-primary); font-weight:800;">مؤسس مطابخ ومعارض فرجاني - الشيف في بيتك</span>
+              <h3 style="font-size:1.25rem; font-weight:900;">${this.t('الشيف محمد فرجاني', 'Chef Mohamed Fergany')}</h3>
+              <span style="font-size:0.85rem; color:var(--color-primary); font-weight:800;">${this.t('مؤسس مطابخ ومعارض فرجاني - الشيف في بيتك', 'Founder of Fergany Gourmet Meats & Kitchens')}</span>
             </div>
 
             <p style="font-size:0.88rem; color:var(--color-text-muted); line-height:1.7; margin-bottom:16px;">
-              تأسست معارض ومطابخ <strong>الشيف فرجاني</strong> في الهرم والجيزة على مبدأ أساسي: إعادة تعريف تجربة الطهي البيتي الفاخر. نوفر للأسرة المصرية أجود أنواع اللحوم البلدي 100% والمشويات والمصنعات المتبلة بأسرار وخبرات الطهاة المحترفين، مجهزة ومعبأة بأعلى معايير السلامة الغذائية لتصلك جاهزة للتسوية الفورية.
+              ${this.t(
+                'تأسست معارض ومطابخ <strong>الشيف فرجاني</strong> في الهرم والجيزة على مبدأ أساسي: إعادة تعريف تجربة الطهي البيتي الفاخر. نوفر للأسرة المصرية أجود أنواع اللحوم البلدي 100% والمشويات والمصنعات المتبلة بأسرار وخبرات الطهاة المحترفين، مجهزة ومعبأة بأعلى معايير السلامة الغذائية لتصلك جاهزة للتسوية الفورية.',
+                'Chef Fergany Gourmet Kitchens was founded in El Haram and Giza on a clear core principle: delivering authentic royal Egyptian dining to every home. We specialize in 100% fresh Egyptian baladi meats hand-marinated with Chef Fergany signature spices, vacuum-sealed and temperature-controlled to reach your door oven-ready.'
+              )}
             </p>
 
             <div style="background:var(--color-page-bg); border-radius:var(--radius-lg); padding:16px; font-size:0.85rem; border:1px solid var(--color-bg-warm); line-height:1.8;">
-              <strong style="color:var(--color-primary); font-size:0.95rem;">ضمان فرجاني الذهبي:</strong><br />
-              • لحوم بلدي طازجة منتقاة بعناية يومياً من مذابح معتمدة.<br />
-              • بدون أي مواد حافظة أو إضافات كيميائية.<br />
-              • عبوات حرارية وتبريد محكم يحافظ على الطعم الأصلي والقيمة الغذائية.<br />
-              • سرعة في التوصيل لجميع أحياء الجيزة والقاهرة الكبرى.
+              <strong style="color:var(--color-primary); font-size:0.95rem;">${this.t('ضمان فرجاني الذهبي:', 'The Fergany Golden Quality Promise:')}</strong><br />
+              ${this.t(
+                '• لحوم بلدي طازجة منتقاة بعناية يومياً من مذابح معتمدة.<br />• بدون أي مواد حافظة أو إضافات كيميائية.<br />• عبوات حرارية وتبريد محكم يحافظ على الطعم الأصلي والقيمة الغذائية.<br />• سرعة في التوصيل لجميع أحياء الجيزة والقاهرة الكبرى.',
+                '• 100% Fresh Baladi meat sourced daily from certified abattoirs.<br />• Zero chemical additives or artificial tenderizers.<br />• Sterile vacuum sealing and thermal packaging preserving original taste and nutrition.<br />• Fast delivery across all Giza and Greater Cairo neighborhoods.'
+              )}
             </div>
           </div>
         `;
@@ -2188,7 +2195,7 @@ class ChefApp {
 
               <div>
                 <label style="font-size:0.82rem; font-weight:800; display:block; margin-bottom:4px;">${this.t('رقم الهاتف', 'Phone')}</label>
-                <input type="tel" name="phone" value="${u.phone}" required style="width:100%; direction:ltr; text-align:right;" />
+                <input type="tel" name="phone" value="${u.phone}" required style="width:100%; direction:ltr; text-align:${s.lang === 'ar' ? 'right' : 'left'};" />
               </div>
 
               <div>
@@ -2224,7 +2231,7 @@ class ChefApp {
                 <label style="font-size:0.82rem; font-weight:800; display:block; margin-bottom:4px;">
                   ${this.t('رقم الطلب (للتحقق من الشراء)', 'Order Number (For Verification)')} *
                 </label>
-                <input type="text" name="orderId" placeholder="مثال: 12345" value="${recentOrder ? recentOrder.id : ''}" required style="width:100%;" />
+                <input type="text" name="orderId" placeholder="${this.t('مثال: 12345', 'e.g. 12345')}" value="${recentOrder ? recentOrder.id : ''}" required style="width:100%;" />
                 <span style="font-size:0.75rem; color:var(--color-text-light); display:block; margin-top:2px;">
                   ${this.t('يتم منح شارة "مشترٍ معتمد" تلقائياً عند مطابقة رقم طلب مسجل', 'Verified Buyer badge is automatically granted when matched with an order')}
                 </span>
@@ -2237,23 +2244,23 @@ class ChefApp {
                 </div>
                 <div>
                   <label style="font-size:0.82rem; font-weight:800; display:block; margin-bottom:4px;">${this.t('المنطقة / الحي', 'Area / City')} *</label>
-                  <input type="text" name="location" value="الهرم - الجيزة" required style="width:100%;" />
+                  <input type="text" name="location" value="${this.t('الهرم - الجيزة', 'El Haram - Giza')}" required style="width:100%;" />
                 </div>
               </div>
 
               <div>
                 <label style="font-size:0.82rem; font-weight:800; display:block; margin-bottom:4px;">${this.t('الصنف الذي جربته', 'Dish Tried')}</label>
-                <input type="text" name="dishTitle" placeholder="مثال: حمام محشي / كفتة حاتي / صينية العزومات" value="${recentOrder && recentOrder.items[0] ? recentOrder.items[0].titleAr : ''}" style="width:100%;" />
+                <input type="text" name="dishTitle" placeholder="${this.t('مثال: حمام محشي / كفتة حاتي / صينية العزومات', 'e.g. Stuffed Pigeon / Grilled Kofta / Feast Tray')}" value="${recentOrder && recentOrder.items[0] ? (s.lang === 'ar' ? recentOrder.items[0].titleAr : recentOrder.items[0].titleEn) : ''}" style="width:100%;" />
               </div>
 
               <div>
                 <label style="font-size:0.82rem; font-weight:800; display:block; margin-bottom:4px;">${this.t('التقييم العام', 'Rating')}</label>
                 <select name="rating" style="width:100%;">
-                  <option value="5">⭐⭐⭐⭐⭐ (ممتاز جداً - 5 نجوم)</option>
-                  <option value="4">⭐⭐⭐⭐ (جيد جداً - 4 نجوم)</option>
-                  <option value="3">⭐⭐⭐ (متوسط - 3 نجوم)</option>
-                  <option value="2">⭐⭐ (أقل من المتوقع)</option>
-                  <option value="1">⭐ (غير راضٍ)</option>
+                  <option value="5">⭐⭐⭐⭐⭐ ${this.t('(ممتاز جداً - 5 نجوم)', '(Excellent - 5 Stars)')}</option>
+                  <option value="4">⭐⭐⭐⭐ ${this.t('(جيد جداً - 4 نجوم)', '(Very Good - 4 Stars)')}</option>
+                  <option value="3">⭐⭐⭐ ${this.t('(متوسط - 3 نجوم)', '(Average - 3 Stars)')}</option>
+                  <option value="2">⭐⭐ ${this.t('(أقل من المتوقع)', '(Below Average)')}</option>
+                  <option value="1">⭐ ${this.t('(غير راضٍ)', '(Dissatisfied)')}</option>
                 </select>
               </div>
 
@@ -2840,13 +2847,13 @@ class ChefApp {
         const schedSlot = formData.get('scheduledSlot') || '';
         const timingStr =
           timingChoice === 'scheduled'
-            ? `حجز مسبق: ${schedDay} (${schedSlot})`
-            : 'توصيل فوري (الآن)';
+            ? (store.state.lang === 'ar' ? `حجز مسبق: ${schedDay} (${schedSlot})` : `Pre-order: ${schedDay} (${schedSlot})`)
+            : (store.state.lang === 'ar' ? 'توصيل فوري (الآن)' : 'Immediate Delivery (Now)');
 
         const orderData = {
           name: formData.get('customerName'),
           phone: formData.get('phone'),
-          address: formData.get('address') || 'استلام من الفرع',
+          address: formData.get('address') || (store.state.lang === 'ar' ? 'استلام من الفرع' : 'Branch Pickup'),
           paymentMethod: formData.get('paymentMethod'),
           deliveryTiming: timingChoice,
           scheduledDate: schedDay,
@@ -2915,7 +2922,10 @@ class ChefApp {
     if (profileCouponsBtn) {
       profileCouponsBtn.addEventListener('click', () => {
         alert(
-          'كوبونات الخصم النشطة لمطابخ الشيف فرجاني:\n\n1. FERGANY10 (خصم 10% على جميع الأصناف)\n2. WELCOME (توصيل مجاني للطلب الأول)\n3. CHEF50 (خصم 50 ج.م على الطلبات فوق 500 ج.م)'
+          this.t(
+            'كوبونات الخصم النشطة لمطابخ الشيف فرجاني:\n\n1. FERGANY10 (خصم 10% على جميع الأصناف)\n2. WELCOME (توصيل مجاني للطلب الأول)\n3. CHEF50 (خصم 50 ج.م على الطلبات فوق 500 ج.م)',
+            'Active Promo Coupons for Chef Fergany Kitchens:\n\n1. FERGANY10 (10% off on all items)\n2. WELCOME (Free delivery on your first order)\n3. CHEF50 (50 EGP off on orders above 500 EGP)'
+          )
         );
       });
     }
@@ -2958,7 +2968,7 @@ class ChefApp {
     });
 
     const total = (product.price + extra) * qty;
-    totalBtnPrice.textContent = `(${total}.00 ج.م)`;
+    totalBtnPrice.textContent = `(${total}.00 ${this.t('ج.م', 'EGP')})`;
   }
 }
 

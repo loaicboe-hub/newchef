@@ -33,8 +33,9 @@ const INITIAL_ORDERS = [
     total: 980,
     fulfillmentType: 'delivery',
     branchNameAr: 'الهرم - شارع العروبة',
+    branchNameEn: 'El Haram - El Orouba',
     customerName: 'أحمد محمد',
-    phone: '01040925170',
+    phone: '+201040925170',
     address: 'شارع الهرم الرئيسي، برج الصفا، شقة 14'
   },
   {
@@ -57,8 +58,9 @@ const INITIAL_ORDERS = [
     total: 720,
     fulfillmentType: 'delivery',
     branchNameAr: 'الهرم - شارع العروبة',
+    branchNameEn: 'El Haram - El Orouba',
     customerName: 'أحمد محمد',
-    phone: '01040925170',
+    phone: '+201040925170',
     address: 'شارع فيصل، محطة المساحة، برج النور'
   }
 ];
@@ -80,7 +82,7 @@ class StateStore {
       appliedCoupon: null,
       user: this.loadStorage(STORAGE_KEYS.USER, {
         name: 'أحمد محمد',
-        phone: '01040925170',
+        phone: '+201040925170',
         city: 'الجيزة',
         street: 'شارع الهرم الرئيسي، برج الصفا',
         building: 'عمارة 14',
@@ -338,7 +340,7 @@ class StateStore {
 
     this.state.appliedCoupon = coupon;
     this.showToast(
-      this.state.lang === 'ar' ? `تم تفعيل الخصم: ${coupon.titleAr}` : `Coupon applied!`,
+      this.state.lang === 'ar' ? `تم تفعيل الخصم: ${coupon.titleAr}` : `Coupon applied: ${coupon.titleEn}`,
       'success'
     );
     this.notify();
@@ -512,8 +514,9 @@ class StateStore {
       location: reviewData.location || (this.state.lang === 'ar' ? 'الجيزة' : 'Giza'),
       rating: Math.min(5, Math.max(1, Number(reviewData.rating) || 5)),
       quote: reviewData.quote || '',
-      dishTitle: reviewData.dishTitle || (existingOrder && existingOrder.items[0] ? existingOrder.items[0].titleAr : 'صينية عزومات فرجاني'),
+      dishTitle: reviewData.dishTitle || (existingOrder && existingOrder.items[0] ? (this.state.lang === 'ar' ? existingOrder.items[0].titleAr : existingOrder.items[0].titleEn) : (this.state.lang === 'ar' ? 'صينية عزومات فرجاني' : 'Fergany Feast Platter')),
       date: new Intl.DateTimeFormat('ar-EG', { dateStyle: 'medium' }).format(new Date()),
+      dateEn: new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(new Date()),
       timestamp: Date.now()
     };
 
