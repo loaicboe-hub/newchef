@@ -87,8 +87,47 @@
     font-size: 0.72rem;
   }
 
+  /* Mobile Hero Chef Card */
   .hero-visual-col {
-    display: none; /* Hide heavy 3D dish on mobile to keep first fold clean and fast */
+    display: flex;
+    justify-content: center;
+    padding: 0 14px 20px 14px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .hero-chef-chic-card {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    border-radius: 20px;
+  }
+
+  .chef-chic-portrait-wrap {
+    height: 320px;
+  }
+
+  @media (max-width: 380px) {
+    .chef-chic-portrait-wrap {
+      height: 270px;
+    }
+  }
+
+  .chef-chic-img {
+    object-position: center 8%;
+  }
+
+  .chef-chic-info {
+    padding: 14px 16px 16px;
+  }
+
+  .chef-chic-name {
+    font-size: 1.25rem;
+  }
+
+  .chef-chic-title {
+    font-size: 0.78rem;
+    margin-bottom: 8px;
   }
 
   /* Products Grid on Mobile */
