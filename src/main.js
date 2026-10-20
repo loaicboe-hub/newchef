@@ -885,9 +885,9 @@ class ChefApp {
                 }
               </div>
               <button class="calc-add-all-btn" id="btn-add-feast-package">
-                <span>🛒</span>
-                <span>${this.t('إضافة تشكيلة العزومة بالكامل للسلة', 'Add Full Feast Package to Cart')}</span>
-                <span>(${pkg.dealPrice} ${this.t('ج.م', 'EGP')})</span>
+                <span class="calc-btn-cart-icon">🛒</span>
+                <span class="calc-btn-title">${this.t('إضافة العزومة بالكامل للسلة', 'Add Full Feast to Cart')}</span>
+                <span class="calc-btn-price-badge">${pkg.dealPrice} ${this.t('ج.م', 'EGP')}</span>
               </button>
             </div>
           </div>
