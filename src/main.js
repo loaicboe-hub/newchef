@@ -420,9 +420,9 @@ class ChefApp {
               </div>
 
               <div class="mobile-header-actions">
-                <button class="branch-select-btn" id="btn-select-branch-mobile" style="padding:5px 10px; font-size:0.75rem;">
+                <button class="branch-select-btn" id="btn-select-branch-mobile" style="padding:5px 9px; font-size:0.72rem; white-space:nowrap;">
                   <span class="loc-icon">📍</span>
-                  <span>${this.t('الهرم', 'Haram')}</span>
+                  <span>${this.t('الفروع والتوصيل', 'Branches & Delivery')}</span>
                 </button>
 
                 <button class="icon-circle-btn" id="btn-lang-toggle-mobile" title="${this.t('اللغة', 'Language')}">
