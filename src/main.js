@@ -1629,7 +1629,7 @@ class ChefApp {
 
     return `
       <nav class="bottom-nav-bar">
-        <button class="nav-tab-btn ${s.activeTab === 'home' ? 'active' : ''}" data-nav="home">
+        <button class="nav-tab-btn ${s.activeTab === 'home' && s.selectedCategory !== 'offers' ? 'active' : ''}" data-nav="home">
           <span class="nav-icon">🏠</span>
           <span>${this.t('الرئيسية', 'Home')}</span>
         </button>
@@ -1645,12 +1645,12 @@ class ChefApp {
           ${count > 0 ? `<span class="nav-cart-badge">${count}</span>` : ''}
         </button>
 
-        <button class="nav-tab-btn ${s.activeTab === 'orders' ? 'active' : ''}" data-nav="orders">
-          <span class="nav-icon">📋</span>
-          <span>${this.t('طلباتي', 'Orders')}</span>
+        <button class="nav-tab-btn ${s.activeTab === 'home' && s.selectedCategory === 'offers' ? 'active' : ''}" data-nav="offers">
+          <span class="nav-icon">🔥</span>
+          <span>${this.t('العروض المميزة', 'Offers')}</span>
         </button>
 
-        <button class="nav-tab-btn ${s.activeTab === 'profile' ? 'active' : ''}" data-nav="profile">
+        <button class="nav-tab-btn ${s.activeTab === 'profile' || s.activeTab === 'orders' ? 'active' : ''}" data-nav="profile">
           <span class="nav-icon">👤</span>
           <span>${this.t('حسابي', 'Profile')}</span>
         </button>
