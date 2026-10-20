@@ -803,35 +803,35 @@ class ChefApp {
               <label class="calc-label">👥 ${this.t('1. حدد عدد الأفراد والضيوف:', '1. Number of Guests:')}</label>
               <div class="calc-pills-selector">
                 <button class="calc-pill-btn ${this.calcState.size === 'small' ? 'active' : ''}" data-calc-size="small">
-                  🍽️ 4 - 6 ${this.t('أفراد (لمة عائلية صغيرة)', 'Guests (Family Lunch)')}
+                  🍽️ 4 - 6 ${this.t('أفراد (لمة عائلية)', 'Guests (Family Lunch)')}
                 </button>
                 <button class="calc-pill-btn ${this.calcState.size === 'medium' ? 'active' : ''}" data-calc-size="medium">
-                  👑 8 - 10 ${this.t('أفراد (العزومة الكلاسيكية - الأكثر طلباً)', 'Guests (Classic Feast - Best Seller)')}
+                  👑 8 - 10 ${this.t('أفراد (العزومة الأكثر طلباً)', 'Guests (Classic Feast)')}
                 </button>
                 <button class="calc-pill-btn ${this.calcState.size === 'large' ? 'active' : ''}" data-calc-size="large">
-                  🏆 15 - 20 ${this.t('فرداً (العزومة الملكية الكبرى)', 'Guests (Grand Feast)')}
+                  🏆 15 - 20 ${this.t('فرداً (العزومة الملكية)', 'Guests (Grand Feast)')}
                 </button>
               </div>
             </div>
 
             <div class="calc-control-group">
               <label class="calc-label">✨ ${this.t('2. مميزات تشكيلة العزومة المختارة:', '2. Package Highlights:')}</label>
-              <div style="display:flex; flex-direction:column; gap:8px; font-size:0.84rem; color:#DDD4C8; padding-top:4px;">
-                <div style="display:flex; align-items:center; gap:8px;">
-                  <span>🥩</span>
-                  <span><strong>${this.t('لحوم بلدي 100%:', '100% Baladi Meat:')}</strong> ${this.t('بدون لحوم مستوردة أو إضافات كيميائية', 'Pure local fresh meat')}</span>
+              <div class="calc-highlights-grid">
+                <div class="calc-highlight-item">
+                  <span class="calc-highlight-icon">🥩</span>
+                  <span><strong>${this.t('لحوم بلدي 100%:', '100% Baladi Meat:')}</strong> ${this.t('طازجة بدون مستورد', 'Fresh local meat')}</span>
                 </div>
-                <div style="display:flex; align-items:center; gap:8px;">
-                  <span>❄️</span>
-                  <span><strong>${this.t('تغليف حراري معقم:', 'Sterile Sealed Box:')}</strong> ${this.t('يحفظ السخونة والنظافة حتى سفرتك', 'Delivered hot to your table')}</span>
+                <div class="calc-highlight-item">
+                  <span class="calc-highlight-icon">❄️</span>
+                  <span><strong>${this.t('تغليف حراري معقم:', 'Sterile Sealed Box:')}</strong> ${this.t('يحفظ السخونة حتى سفرتك', 'Delivered hot to your table')}</span>
                 </div>
-                <div style="display:flex; align-items:center; gap:8px;">
-                  <span>🚀</span>
-                  <span><strong>${this.t('شحن وتوصيل مجاني:', 'Free Delivery:')}</strong> ${this.t('مؤهلة للتوصيل المجاني بالكامل (أكثر من 600 ج.م)', 'Unlocks 100% free delivery')}</span>
+                <div class="calc-highlight-item">
+                  <span class="calc-highlight-icon">🚀</span>
+                  <span><strong>${this.t('شحن وتوصيل مجاني:', 'Free Delivery:')}</strong> ${this.t('مؤهلة للشحن المجاني', 'Unlocks free delivery')}</span>
                 </div>
-                <div style="display:flex; align-items:center; gap:8px;">
-                  <span>🎁</span>
-                  <span><strong>${this.t('توفير العرض:', 'Package Savings:')}</strong> ${this.t(`وفر ${pkg.saving} ج.م مقارنة بشراء الأصناف منفردة`, `Save ${pkg.saving} EGP vs single items`)}</span>
+                <div class="calc-highlight-item">
+                  <span class="calc-highlight-icon">🎁</span>
+                  <span><strong>${this.t('توفير العرض:', 'Package Savings:')}</strong> ${this.t(`وفر ${pkg.saving} ج.م مع التشكيلة`, `Save ${pkg.saving} EGP`)}</span>
                 </div>
               </div>
             </div>
@@ -841,12 +841,14 @@ class ChefApp {
           <div class="calc-result-box" id="calc-result-display">
             <div class="calc-res-header">
               <div class="calc-res-title">
-                <h3>👑 ${s.lang === 'ar' ? pkg.titleAr : pkg.titleEn}</h3>
+                <div class="calc-res-title-row">
+                  <h3>👑 ${s.lang === 'ar' ? pkg.titleAr : pkg.titleEn}</h3>
+                  <div class="calc-pricing-badge">
+                    <span class="calc-old-price">${pkg.origPrice} ${this.t('ج.م', 'EGP')}</span>
+                    <span class="calc-new-price">${pkg.dealPrice} ${this.t('ج.م', 'EGP')}</span>
+                  </div>
+                </div>
                 <p>${s.lang === 'ar' ? pkg.descAr : pkg.descEn}</p>
-              </div>
-              <div class="calc-pricing-badge">
-                <span class="calc-old-price">${pkg.origPrice} ${this.t('ج.م', 'EGP')}</span>
-                <span class="calc-new-price">${pkg.dealPrice} ${this.t('ج.م', 'EGP')}</span>
               </div>
             </div>
 
@@ -858,9 +860,11 @@ class ChefApp {
                   return `
                   <div class="calc-item-card">
                     <img src="${p.image}" alt="${s.lang === 'ar' ? p.titleAr : p.titleEn}" />
-                    <div class="calc-item-info" style="flex:1;">
-                      <h4>${s.lang === 'ar' ? item.labelAr : item.labelEn}</h4>
-                      <span>${p.price} ${this.t('ج.م', 'EGP')} (${s.lang === 'ar' ? p.unitAr : p.unitEn})</span>
+                    <div class="calc-item-info">
+                      <div class="calc-item-header-row">
+                        <h4>${s.lang === 'ar' ? item.labelAr : item.labelEn}</h4>
+                        <span class="calc-item-price-tag">${p.price} ${this.t('ج.م', 'EGP')} <small>(${s.lang === 'ar' ? p.unitAr : p.unitEn})</small></span>
+                      </div>
                     </div>
                     <div class="calc-item-qty-stepper">
                       <button class="calc-qty-btn" data-calc-item="${item.productId}" data-calc-dir="-1" title="${this.t('تقليل', 'Decrease')}">-</button>
@@ -874,7 +878,7 @@ class ChefApp {
             </div>
 
             <div class="calc-action-row">
-              <div style="font-size:0.85rem; color:#FFA35C; font-weight:800;">
+              <div class="calc-delivery-promo">
                 ${pkg.qualifiesForFreeDelivery
                   ? `🎉 ${this.t(`العرض مؤهل للتوصيل المجاني وتوفير ${pkg.saving} ج.م!`, `Includes Free Delivery & ${pkg.saving} EGP discount!`)}`
                   : `💡 ${this.t(`وفر ${pkg.saving} ج.م! (أضف أصنافاً بقيمة ${600 - pkg.dealPrice} ج.م للتوصيل المجاني)`, `Saves ${pkg.saving} EGP! (Add ${600 - pkg.dealPrice} EGP for free delivery)`)}`
