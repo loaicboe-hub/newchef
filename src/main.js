@@ -1631,28 +1631,28 @@ class ChefApp {
       <nav class="bottom-nav-bar">
         <button class="nav-tab-btn ${s.activeTab === 'home' && s.selectedCategory !== 'offers' ? 'active' : ''}" data-nav="home">
           <span class="nav-icon">🏠</span>
-          <span>${this.t('الرئيسية', 'Home')}</span>
+          <span class="nav-label">${this.t('الرئيسية', 'Home')}</span>
         </button>
 
-        <button class="nav-tab-btn ${s.activeTab === 'search' ? 'active' : ''}" data-nav="search">
-          <span class="nav-icon">🔍</span>
-          <span>${this.t('البحث', 'Search')}</span>
+        <button class="nav-tab-btn" data-nav="catalog">
+          <span class="nav-icon">🍽️</span>
+          <span class="nav-label">${this.t('قائمة الأطباق', 'Menu')}</span>
         </button>
 
         <!-- Floating Center Cart Icon -->
-        <button class="nav-cart-btn" data-nav="cart" title="${this.t('سلة المشتريات', 'Shopping Cart')}">
+        <button class="nav-cart-btn ${s.activeTab === 'cart' ? 'active' : ''}" data-nav="cart" title="${this.t('سلة المشتريات', 'Shopping Cart')}">
           <span class="cart-icon">🛒</span>
           ${count > 0 ? `<span class="nav-cart-badge">${count}</span>` : ''}
         </button>
 
         <button class="nav-tab-btn ${s.activeTab === 'home' && s.selectedCategory === 'offers' ? 'active' : ''}" data-nav="offers">
           <span class="nav-icon">🔥</span>
-          <span>${this.t('العروض المميزة', 'Offers')}</span>
+          <span class="nav-label">${this.t('العروض المميزة', 'Offers')}</span>
         </button>
 
         <button class="nav-tab-btn ${s.activeTab === 'profile' || s.activeTab === 'orders' ? 'active' : ''}" data-nav="profile">
           <span class="nav-icon">👤</span>
-          <span>${this.t('حسابي', 'Profile')}</span>
+          <span class="nav-label">${this.t('حسابي', 'Profile')}</span>
         </button>
       </nav>
     `;

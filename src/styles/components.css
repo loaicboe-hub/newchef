@@ -1787,17 +1787,18 @@ html[dir="ltr"] .footer-heading::after {
   left: 0;
   right: 0;
   width: 100%;
-  height: var(--bottom-nav-height);
-  background: rgba(255, 255, 255, 0.97);
+  height: 66px;
+  background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-top: 1px solid var(--color-bg-warm);
   display: flex;
   align-items: center;
   justify-content: space-around;
-  padding: 4px 6px;
+  padding: 4px 4px 6px;
   z-index: 100;
   box-shadow: var(--shadow-bottom-nav);
+  box-sizing: border-box;
 }
 
 .nav-tab-btn {
@@ -1806,19 +1807,42 @@ html[dir="ltr"] .footer-heading::after {
   align-items: center;
   justify-content: center;
   flex: 1;
+  min-width: 0;
   color: var(--color-text-muted);
   font-size: 0.72rem;
   font-weight: 700;
-  padding: 4px 0;
+  padding: 2px 2px;
   gap: 2px;
   position: relative;
   transition: color var(--transition-fast);
   cursor: pointer;
+  background: transparent;
+  border: none;
 }
 
 .nav-tab-btn .nav-icon {
   font-size: 1.25rem;
   display: block;
+  line-height: 1;
+}
+
+.nav-tab-btn .nav-label {
+  font-size: 0.67rem;
+  font-weight: 800;
+  white-space: nowrap;
+  display: block;
+  text-align: center;
+  line-height: 1.15;
+  letter-spacing: -0.2px;
+}
+
+@media (max-width: 375px) {
+  .nav-tab-btn .nav-label {
+    font-size: 0.62rem;
+  }
+  .nav-tab-btn .nav-icon {
+    font-size: 1.15rem;
+  }
 }
 
 .nav-tab-btn.active {
