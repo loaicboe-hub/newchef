@@ -1747,6 +1747,12 @@ class ChefApp {
           <span class="nav-icon">👤</span>
           <span class="nav-label">${this.t('حسابي', 'Profile')}</span>
         </button>
+
+        <!-- Dedicated Language Toggle in Bottom Navigation Bar -->
+        <button class="nav-tab-btn" data-action="toggle-lang" title="${this.t('تغيير لغة الموقع', 'Switch Website Language')}">
+          <span class="nav-icon">🌐</span>
+          <span class="nav-label" style="font-weight:900; color:var(--color-primary);">${s.lang === 'ar' ? 'English' : 'عربي'}</span>
+        </button>
       </nav>
     `;
   }

@@ -185,13 +185,9 @@
     text-overflow: ellipsis;
   }
 
+  /* Always hide slogan on mobile screens to save horizontal space and guarantee language button is visible */
   .mobile-header-bar .brand-title-group .slogan-tag {
-    font-size: 0.62rem;
-    line-height: 1;
-    margin-top: 1px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    display: none !important;
   }
 
   .mobile-header-actions {
@@ -202,42 +198,40 @@
   }
 
   .mobile-lang-btn {
-    padding: 5px 9px;
-    font-size: 0.74rem;
-    font-weight: 800;
-    background: #FFF4EB;
-    border: 1.5px solid #FFDEC9;
-    color: var(--color-primary);
-    border-radius: var(--radius-full);
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    cursor: pointer;
-    flex-shrink: 0;
-    white-space: nowrap;
-    touch-action: manipulation;
+    padding: 5px 10px !important;
+    font-size: 0.78rem !important;
+    font-weight: 900 !important;
+    background: #FFF0E5 !important;
+    border: 1.5px solid var(--color-primary) !important;
+    color: var(--color-primary) !important;
+    border-radius: var(--radius-full) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    cursor: pointer !important;
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+    touch-action: manipulation !important;
+    box-shadow: 0 1px 4px rgba(245, 122, 33, 0.15) !important;
   }
 
   .mobile-lang-btn * {
-    pointer-events: none;
+    pointer-events: none !important;
   }
 
   .mobile-branch-pill {
-    padding: 5px 8px;
-    font-size: 0.72rem;
-    flex-shrink: 0;
+    padding: 5px 8px !important;
+    font-size: 0.72rem !important;
+    flex-shrink: 0 !important;
   }
 
   .mobile-cart-btn {
-    width: 34px;
-    height: 34px;
-    flex-shrink: 0;
+    width: 34px !important;
+    height: 34px !important;
+    flex-shrink: 0 !important;
   }
 
   @media (max-width: 375px) {
-    .mobile-header-bar .brand-title-group .slogan-tag {
-      display: none !important;
-    }
     .mobile-branch-pill .branch-name {
       display: none !important;
     }
@@ -246,7 +240,7 @@
     }
     .mobile-lang-btn {
       padding: 4px 7px !important;
-      font-size: 0.70rem !important;
+      font-size: 0.72rem !important;
     }
   }
 
