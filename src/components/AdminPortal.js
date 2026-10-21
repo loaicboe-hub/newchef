@@ -84,10 +84,10 @@ class AdminPortal {
       <div class="admin-login-backdrop">
         <div class="admin-login-card">
           <div class="admin-login-icon">👑</div>
-          <h2 style="font-size:1.45rem; font-weight:900; color:#FFF; margin-bottom:6px;">
+          <h2 style="font-size:1.45rem; font-weight:900; color:#2D1E12; margin-bottom:6px;">
             ${s.lang === 'ar' ? 'لوحة تحكم مطابخ الشيف فرجاني' : 'Chef Fergany Admin Portal'}
           </h2>
-          <p style="font-size:0.82rem; color:#CFC2B4; margin-bottom:24px;">
+          <p style="font-size:0.84rem; color:#7A5E49; margin-bottom:24px;">
             ${s.lang === 'ar' ? 'سجل الدخول لإدارة الطلبات الحية، الأصناف وقاعدة العملاء' : 'Sign in to manage live orders, menu items and customer records'}
           </p>
 
@@ -121,8 +121,8 @@ class AdminPortal {
             </button>
           </form>
 
-          <div style="margin-top:20px; font-size:0.8rem; color:#8C7E72;">
-            <a href="#" id="link-back-to-store" style="color:#FFA35C; text-decoration:none; font-weight:800;">
+          <div style="margin-top:20px; font-size:0.82rem; color:#7A5E49;">
+            <a href="#" id="link-back-to-store" style="color:#D35400; text-decoration:none; font-weight:800;">
               ← ${s.lang === 'ar' ? 'العودة لمتجر العملاء' : 'Back to Storefront'}
             </a>
           </div>
@@ -147,7 +147,7 @@ class AdminPortal {
           <div class="admin-logo-box">
             <span style="font-size:1.6rem;">👑</span>
             <div>
-              <h1 style="font-size:1.15rem; font-weight:900; color:#FFF; margin:0;">
+              <h1 style="font-size:1.15rem; font-weight:900; color:#2D1E12; margin:0;">
                 CHEF FERGANY ADMIN
               </h1>
               <span class="admin-logo-badge">
@@ -172,7 +172,7 @@ class AdminPortal {
             </button>
 
             <!-- Logout -->
-            <button class="admin-action-btn" id="btn-admin-logout" style="background:rgba(239,68,68,0.15); border-color:rgba(239,68,68,0.3); color:#FCA5A5;">
+            <button class="admin-action-btn" id="btn-admin-logout" style="background:#FFF1F1; border-color:#FFD1D1; color:#DC2626;">
               <span>🚪</span>
               <span>خروج</span>
             </button>
@@ -182,22 +182,22 @@ class AdminPortal {
         <!-- Main Body -->
         <div class="admin-main-layout">
           <!-- Quick Metric Stats -->
-          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px; margin-bottom:20px;">
-            <div style="background:#18120D; border:1px solid rgba(255,255,255,0.08); border-radius:var(--radius-md); padding:16px;">
-              <span style="font-size:0.78rem; color:#A89B8D; font-weight:800;">📦 إجمالي الطلبات</span>
-              <div style="font-size:1.6rem; font-weight:900; color:#FFA35C; margin-top:4px;">${this.adminOrders.length}</div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:14px; margin-bottom:24px;">
+            <div style="background:#FFFFFF; border:1.5px solid #FFE4D1; border-radius:var(--radius-lg); padding:18px; box-shadow:0 4px 16px rgba(245,122,33,0.06);">
+              <span style="font-size:0.8rem; color:#7A5E49; font-weight:800;">📦 إجمالي الطلبات</span>
+              <div style="font-size:1.7rem; font-weight:900; color:#D35400; margin-top:4px;">${this.adminOrders.length}</div>
             </div>
-            <div style="background:#18120D; border:1px solid rgba(245,122,33,0.4); border-radius:var(--radius-md); padding:16px; background:linear-gradient(145deg, #1D140D 0%, #17100B 100%);">
-              <span style="font-size:0.78rem; color:#FFA35C; font-weight:800;">⏳ طلبات بانتظار المطبخ</span>
-              <div style="font-size:1.6rem; font-weight:900; color:#FFF; margin-top:4px;">${pendingOrdersCount}</div>
+            <div style="background:linear-gradient(145deg, #FFF6EE 0%, #FFEDE0 100%); border:1.5px solid #FFA35C; border-radius:var(--radius-lg); padding:18px; box-shadow:0 6px 18px rgba(245,122,33,0.12);">
+              <span style="font-size:0.8rem; color:#D35400; font-weight:800;">⏳ طلبات بانتظار المطبخ</span>
+              <div style="font-size:1.7rem; font-weight:900; color:#B33D00; margin-top:4px;">${pendingOrdersCount}</div>
             </div>
-            <div style="background:#18120D; border:1px solid rgba(255,255,255,0.08); border-radius:var(--radius-md); padding:16px;">
-              <span style="font-size:0.78rem; color:#A89B8D; font-weight:800;">🍗 أصناف المنيو</span>
-              <div style="font-size:1.6rem; font-weight:900; color:#FFA35C; margin-top:4px;">${this.menuItems.length}</div>
+            <div style="background:#FFFFFF; border:1.5px solid #FFE4D1; border-radius:var(--radius-lg); padding:18px; box-shadow:0 4px 16px rgba(245,122,33,0.06);">
+              <span style="font-size:0.8rem; color:#7A5E49; font-weight:800;">🍗 أصناف المنيو</span>
+              <div style="font-size:1.7rem; font-weight:900; color:#D35400; margin-top:4px;">${this.menuItems.length}</div>
             </div>
-            <div style="background:#18120D; border:1px solid rgba(255,255,255,0.08); border-radius:var(--radius-md); padding:16px;">
-              <span style="font-size:0.78rem; color:#A89B8D; font-weight:800;">👥 العملاء المسجلون</span>
-              <div style="font-size:1.6rem; font-weight:900; color:#FFA35C; margin-top:4px;">${this.customers.length || 18}</div>
+            <div style="background:#FFFFFF; border:1.5px solid #FFE4D1; border-radius:var(--radius-lg); padding:18px; box-shadow:0 4px 16px rgba(245,122,33,0.06);">
+              <span style="font-size:0.8rem; color:#7A5E49; font-weight:800;">👥 العملاء المسجلون</span>
+              <div style="font-size:1.7rem; font-weight:900; color:#D35400; margin-top:4px;">${this.customers.length || 18}</div>
             </div>
           </div>
 
@@ -206,7 +206,7 @@ class AdminPortal {
             <button class="admin-nav-tab ${s.adminTab === 'orders' ? 'active' : ''}" data-admin-tab="orders">
               <span>📋</span>
               <span>الطلبات الحية</span>
-              <span style="background:rgba(0,0,0,0.3); padding:2px 8px; border-radius:10px; font-size:0.75rem;">${pendingOrdersCount}</span>
+              <span style="background:#FFF1E6; color:#D35400; border:1px solid #FFDEC9; padding:2px 8px; border-radius:10px; font-size:0.75rem; font-weight:800;">${pendingOrdersCount}</span>
             </button>
             <button class="admin-nav-tab ${s.adminTab === 'menu' ? 'active' : ''}" data-admin-tab="menu">
               <span>🍗</span>
@@ -306,10 +306,10 @@ class AdminPortal {
         ${
           filteredOrders.length === 0
             ? `
-          <div style="text-align:center; padding:60px 20px; background:#18120D; border-radius:var(--radius-md); border:1px solid rgba(255,255,255,0.06);">
+          <div style="text-align:center; padding:60px 20px; background:#FFFFFF; border-radius:var(--radius-lg); border:1.5px solid #FFE4D1; box-shadow:0 6px 18px rgba(245,122,33,0.06);">
             <span style="font-size:3rem; display:block; margin-bottom:12px;">📭</span>
-            <h3 style="color:#FFF; font-size:1.1rem; margin-bottom:6px;">لا توجد طلبات في هذا القسم حالياً</h3>
-            <p style="color:#A89B8D; font-size:0.84rem;">الطلبات الجديدة تظهر هنا لحظياً مع تنبيه صوتي.</p>
+            <h3 style="color:#2D1E12; font-size:1.15rem; font-weight:900; margin-bottom:6px;">لا توجد طلبات في هذا القسم حالياً</h3>
+            <p style="color:#7A5E49; font-size:0.86rem;">الطلبات الجديدة تظهر هنا لحظياً مع تنبيه صوتي.</p>
           </div>
         `
             : `
@@ -339,7 +339,7 @@ class AdminPortal {
         <div class="admin-order-header">
           <div style="display:flex; align-items:center; gap:8px;">
             <span class="admin-order-num">#${orderNum}</span>
-            <span style="font-size:0.75rem; color:#A89B8D;">${order.date || 'اليوم'}</span>
+            <span style="font-size:0.75rem; color:#8C7564;">${order.date || 'اليوم'}</span>
           </div>
 
           <span class="admin-status-badge ${
@@ -371,7 +371,7 @@ class AdminPortal {
           <div class="admin-order-customer">
             <span>👤 ${order.customerName || 'عميل فرجاني'}</span>
             <a href="tel:${cleanPhone}" class="admin-order-phone">📞 ${phone}</a>
-            <a href="https://wa.me/2${cleanPhone}" target="_blank" class="admin-order-phone" style="color:#22C55E;">💬 واتساب</a>
+            <a href="https://wa.me/2${cleanPhone}" target="_blank" class="admin-order-phone" style="color:#16A34A; background:#F0FDF4; border-color:#BBF7D0;">💬 واتساب</a>
           </div>
 
           <div class="admin-order-address">
@@ -380,7 +380,7 @@ class AdminPortal {
 
           ${
             order.notes
-              ? `<div style="color:#FFA35C; font-size:0.8rem; margin-bottom:8px;">📝 ملاحظات: ${order.notes}</div>`
+              ? `<div style="color:#D35400; font-size:0.82rem; font-weight:700; margin-bottom:8px;">📝 ملاحظات: ${order.notes}</div>`
               : ''
           }
 
@@ -394,7 +394,7 @@ class AdminPortal {
                 return `
                 <div class="admin-order-item-row">
                   <span>${qty}x ${title}</span>
-                  <span style="font-weight:700;">${price * qty} ج.م</span>
+                  <span style="font-weight:800; color:#D35400;">${price * qty} ج.م</span>
                 </div>
               `;
               })
@@ -411,10 +411,10 @@ class AdminPortal {
             ${
               isPending
                 ? `
-              <button class="admin-btn-action-status" style="background:#3B82F6; color:#FFF;" data-change-order="${order.id}" data-target-status="PREPARING">
+              <button class="admin-btn-action-status" style="background:#2563EB; color:#FFF;" data-change-order="${order.id}" data-target-status="PREPARING">
                 👨‍🍳 بدء التحضير
               </button>
-              <button class="admin-btn-action-status" style="background:rgba(239,68,68,0.2); color:#FCA5A5;" data-change-order="${order.id}" data-target-status="CANCELLED">
+              <button class="admin-btn-action-status" style="background:#FEE2E2; color:#DC2626; border:1px solid #FECACA;" data-change-order="${order.id}" data-target-status="CANCELLED">
                 إلغاء
               </button>
             `
@@ -424,7 +424,7 @@ class AdminPortal {
             ${
               isPreparing
                 ? `
-              <button class="admin-btn-action-status" style="background:#8B5CF6; color:#FFF;" data-change-order="${order.id}" data-target-status="OUT_FOR_DELIVERY">
+              <button class="admin-btn-action-status" style="background:#7C3AED; color:#FFF;" data-change-order="${order.id}" data-target-status="OUT_FOR_DELIVERY">
                 🛵 خروج للتوصيل
               </button>
             `
@@ -444,7 +444,7 @@ class AdminPortal {
             ${
               isCompleted
                 ? `
-              <span style="font-size:0.75rem; color:#86EFAC;">✔️ مكتمل بنجاح</span>
+              <span style="font-size:0.8rem; color:#15803D; font-weight:800;">✔️ مكتمل بنجاح</span>
             `
                 : ''
             }
@@ -461,11 +461,11 @@ class AdminPortal {
     return `
       <div>
         <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:18px;">
-          <h2 style="font-size:1.15rem; font-weight:800; color:#FFF; margin:0;">
+          <h2 style="font-size:1.15rem; font-weight:900; color:#2D1E12; margin:0;">
             قائمة أصناف المنيو (${this.menuItems.length} صنف)
           </h2>
 
-          <button class="admin-action-btn" id="btn-admin-add-dish" style="background:linear-gradient(135deg, var(--color-primary) 0%, #D86313 100%); color:#FFF; border:none; padding:8px 18px; font-weight:800;">
+          <button class="admin-action-btn" id="btn-admin-add-dish" style="background:linear-gradient(135deg, var(--color-primary) 0%, #FF9040 100%); color:#FFF; border:none; padding:9px 20px; font-weight:900; box-shadow:0 4px 14px rgba(245,122,33,0.35);">
             ➕ إضافة صنف جديد للمنيو
           </button>
         </div>
@@ -494,15 +494,15 @@ class AdminPortal {
                         <img src="${item.imageUrl || item.image || '/assets/dishes/hamam_mahshi_dish.jpg'}" alt="${item.title_ar || item.titleAr}" class="admin-dish-thumb" />
                       </td>
                       <td>
-                        <div style="font-weight:800; color:#FFF;">${item.title_ar || item.titleAr}</div>
-                        <div style="font-size:0.75rem; color:#9C8F82;">${item.title_en || item.titleEn || ''}</div>
+                        <div style="font-weight:900; color:#2D1E12;">${item.title_ar || item.titleAr}</div>
+                        <div style="font-size:0.75rem; color:#7A5E49;">${item.title_en || item.titleEn || ''}</div>
                       </td>
                       <td>
-                        <span style="background:rgba(255,255,255,0.06); padding:3px 10px; border-radius:12px; font-size:0.75rem; color:#DDD;">
+                        <span style="background:#FFF1E6; border:1.5px solid #FFDEC9; padding:4px 12px; border-radius:12px; font-size:0.75rem; color:#D35400; font-weight:800;">
                           ${catName}
                         </span>
                       </td>
-                      <td style="font-weight:900; color:#FFA35C;">
+                      <td style="font-weight:900; color:#D35400; font-size:0.95rem;">
                         ${item.price} ج.م
                       </td>
                       <td>
@@ -512,10 +512,10 @@ class AdminPortal {
                       </td>
                       <td>
                         <div style="display:flex; align-items:center; gap:6px;">
-                          <button class="admin-action-btn" data-edit-dish="${item.id || item.title_ar || item.titleAr}" style="padding:4px 8px; font-size:0.75rem;">
+                          <button class="admin-action-btn" data-edit-dish="${item.id || item.title_ar || item.titleAr}" style="padding:4px 10px; font-size:0.75rem;">
                             ✏️ تعديل
                           </button>
-                          <button class="admin-action-btn" data-delete-dish="${item.id || item.title_ar || item.titleAr}" style="padding:4px 8px; font-size:0.75rem; color:#FCA5A5;">
+                          <button class="admin-action-btn" data-delete-dish="${item.id || item.title_ar || item.titleAr}" style="padding:4px 10px; font-size:0.75rem; background:#FFF1F1; border-color:#FFD1D1; color:#DC2626;">
                             🗑️ حذف
                           </button>
                         </div>
@@ -539,7 +539,7 @@ class AdminPortal {
     return `
       <div>
         <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:18px;">
-          <h2 style="font-size:1.15rem; font-weight:800; color:#FFF; margin:0;">
+          <h2 style="font-size:1.15rem; font-weight:900; color:#2D1E12; margin:0;">
             أقسام وتصنيفات المنيو (${this.categories.length})
           </h2>
         </div>
@@ -549,16 +549,16 @@ class AdminPortal {
             .map((cat) => {
               const count = this.menuItems.filter((i) => (i.category?.slug || i.category) === cat.id || (i.category?.slug || i.category) === cat.slug).length;
               return `
-              <div style="background:#18120D; border:1px solid rgba(255,255,255,0.08); border-radius:var(--radius-md); padding:16px; display:flex; align-items:center; justify-content:space-between;">
+              <div style="background:#FFFFFF; border:1.5px solid #FFE4D1; border-radius:var(--radius-lg); padding:18px; box-shadow:0 4px 16px rgba(245,122,33,0.06); display:flex; align-items:center; justify-content:space-between;">
                 <div>
-                  <div style="font-size:1.05rem; font-weight:900; color:#FFF; margin-bottom:4px;">
+                  <div style="font-size:1.05rem; font-weight:900; color:#2D1E12; margin-bottom:4px;">
                     ${cat.icon || '📂'} ${cat.name_ar || cat.nameAr}
                   </div>
-                  <div style="font-size:0.78rem; color:#A89B8D;">
+                  <div style="font-size:0.8rem; color:#7A5E49;">
                     ${cat.name_en || cat.nameEn || ''}
                   </div>
                 </div>
-                <span style="background:rgba(245,122,33,0.15); color:#FFA35C; padding:4px 12px; border-radius:var(--radius-full); font-size:0.8rem; font-weight:800;">
+                <span style="background:#FFF1E6; color:#D35400; border:1px solid #FFDEC9; padding:4px 12px; border-radius:var(--radius-full); font-size:0.8rem; font-weight:800;">
                   ${count} صنف
                 </span>
               </div>
@@ -585,7 +585,7 @@ class AdminPortal {
     return `
       <div>
         <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:18px;">
-          <h2 style="font-size:1.15rem; font-weight:800; color:#FFF; margin:0;">
+          <h2 style="font-size:1.15rem; font-weight:900; color:#2D1E12; margin:0;">
             سجل العملاء وقاعدة البيانات (${customerList.length})
           </h2>
         </div>
@@ -608,13 +608,13 @@ class AdminPortal {
                   .map(
                     (c) => `
                   <tr>
-                    <td style="font-weight:800; color:#FFF;">${c.fullName}</td>
-                    <td style="color:#FFA35C; direction:ltr; text-align:start;">${c.phone}</td>
-                    <td style="font-weight:800;">${c.totalOrders} طلبات</td>
-                    <td style="font-weight:900; color:#86EFAC;">${c.totalSpent} ج.م</td>
-                    <td style="color:#A89B8D; font-size:0.78rem;">${c.createdAt ? String(c.createdAt).substring(0, 10) : '2026-10-20'}</td>
+                    <td style="font-weight:900; color:#2D1E12;">${c.fullName}</td>
+                    <td style="color:#D35400; font-weight:800; direction:ltr; text-align:start;">${c.phone}</td>
+                    <td style="font-weight:800; color:#4A3B32;">${c.totalOrders} طلبات</td>
+                    <td style="font-weight:900; color:#15803D;">${c.totalSpent} ج.م</td>
+                    <td style="color:#7A5E49; font-size:0.8rem;">${c.createdAt ? String(c.createdAt).substring(0, 10) : '2026-10-20'}</td>
                     <td>
-                      <a href="https://wa.me/2${c.phone.replace(/[^0-9]/g, '')}" target="_blank" class="admin-action-btn" style="padding:4px 10px; font-size:0.75rem; color:#22C55E;">
+                      <a href="https://wa.me/2${c.phone.replace(/[^0-9]/g, '')}" target="_blank" class="admin-action-btn" style="padding:4px 10px; font-size:0.75rem; color:#15803D; background:#F0FDF4; border-color:#BBF7D0;">
                         💬 واتساب
                       </a>
                     </td>
@@ -688,7 +688,7 @@ class AdminPortal {
 
             <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px;">
               <input type="checkbox" id="dish-available" ${dish.isAvailable !== false ? 'checked' : ''} style="width:18px; height:18px; accent-color:var(--color-primary);" />
-              <label for="dish-available" style="font-size:0.88rem; font-weight:800; color:#FFF; cursor:pointer;">
+              <label for="dish-available" style="font-size:0.88rem; font-weight:800; color:#2D1E12; cursor:pointer;">
                 الصنف متاح للطلب الفوري في المتجر
               </label>
             </div>
