@@ -148,9 +148,7 @@
   }
 
   .mobile-cart-btn {
-    width: 34px !important;
-    height: 34px !important;
-    flex-shrink: 0 !important;
+    display: none !important;
   }
 
   @media (max-width: 375px) {

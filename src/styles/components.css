@@ -555,23 +555,9 @@ html[dir="ltr"] .desktop-search-icon {
   font-size: 0.85rem;
 }
 
-/* Compact Mobile Cart Button */
+/* Compact Mobile Cart Button (Hidden permanently per user specification) */
 .mobile-cart-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--color-primary);
-  border: 1px solid var(--color-primary);
-  color: #FFFFFF;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  position: relative;
-  box-shadow: 0 2px 8px rgba(245, 122, 33, 0.3);
-  transition: all var(--transition-fast);
-  flex-shrink: 0;
-  font-family: inherit;
+  display: none !important;
 }
 
 .mobile-cart-btn:hover {

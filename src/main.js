@@ -340,14 +340,7 @@ class ChefApp {
   }
 
   // =========================================================================
-  // 1. TOP UTILITY BAR (Disabled / Cleaned up per user request)
-  // =========================================================================
-  renderSiteTopBar() {
-    return '';
-  }
-
-  // =========================================================================
-  // 2. SITE MAIN HEADER
+  // 1. SITE MAIN HEADER
   // =========================================================================
   renderSiteHeader() {
     const s = store.state;
@@ -460,12 +453,6 @@ class ChefApp {
                 <button class="mobile-branch-pill" id="btn-select-branch-mobile" title="${this.t('الفروع والتوصيل', 'Branches & Delivery')}">
                   <span class="loc-icon">📍</span>
                   <span class="branch-name">${this.t('الهرم', 'Haram')}</span>
-                </button>
-
-                <!-- 3. Mobile Cart Icon Button -->
-                <button class="mobile-cart-btn" data-nav="cart" title="${this.t('سلة المشتريات', 'Shopping Cart')}">
-                  <span>🛒</span>
-                  ${cartCount > 0 ? `<span class="nav-cart-badge">${cartCount}</span>` : ''}
                 </button>
               </div>
             </div>
@@ -580,10 +567,6 @@ class ChefApp {
                 <div class="trust-badge-item">
                   <span class="t-icon">❄️</span>
                   <span>${this.t('تغليف حراري معقم', 'Vacuum Sealed Packaging')}</span>
-                </div>
-                <div class="trust-badge-item">
-                  <span class="t-icon">🏍️</span>
-                  <span>${this.t('توصيل حراري فوري', 'Express Hot Delivery')}</span>
                 </div>
               </div>
             </div>
