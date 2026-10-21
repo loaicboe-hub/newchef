@@ -104,6 +104,11 @@
     gap: 3px !important;
   }
 
+  /* Full notice continuous marquee ribbon on mobile */
+  .top-bar-marquee-strip {
+    display: flex !important;
+  }
+
   /* Show mobile header and bottom bar */
   .mobile-header-bar {
     display: flex !important;

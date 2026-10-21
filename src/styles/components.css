@@ -136,6 +136,50 @@
   pointer-events: none;
 }
 
+/* Mobile Announcement Marquee Strip */
+.top-bar-marquee-strip {
+  display: none;
+  background: rgba(0, 0, 0, 0.18);
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  overflow: hidden;
+  height: 28px;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+}
+
+.top-bar-marquee-strip .marquee-track {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  width: max-content;
+  direction: ltr;
+  animation: marqueeScroll 26s linear infinite;
+  will-change: transform;
+}
+
+.top-bar-marquee-strip:hover .marquee-track,
+.top-bar-marquee-strip:active .marquee-track {
+  animation-play-state: paused;
+}
+
+.top-bar-marquee-strip .marquee-item {
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  padding: 0 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+}
+
+@keyframes marqueeScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
 /* ==========================================================================
    2. MAIN SITE HEADER (Responsive Dual-Tier)
    ========================================================================== */
