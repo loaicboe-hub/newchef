@@ -3174,27 +3174,32 @@ class ChefApp {
   }
 
   bindAdminDashboardEvents() {
-    // Top bar actions
+    const handleLogout = () => {
+      api.adminLogout();
+      store.logoutAdmin();
+      store.state.currentRoute = 'storefront';
+      window.location.hash = '';
+      store.showToast(store.state.lang === 'ar' ? 'تم تسجيل الخروج من لوحة التحكم' : 'Admin logged out', 'info');
+      this.render();
+    };
+
+    const handleViewStore = () => {
+      store.state.currentRoute = 'storefront';
+      window.location.hash = '';
+      this.render();
+    };
+
     const logoutBtn = document.getElementById('btn-admin-logout');
-    if (logoutBtn) {
-      logoutBtn.addEventListener('click', () => {
-        api.adminLogout();
-        store.logoutAdmin();
-        store.state.currentRoute = 'storefront';
-        window.location.hash = '';
-        store.showToast(store.state.lang === 'ar' ? 'تم تسجيل الخروج من لوحة التحكم' : 'Admin logged out', 'info');
-        this.render();
-      });
-    }
+    if (logoutBtn) logoutBtn.addEventListener('click', handleLogout);
+
+    const headerLogoutBtn = document.getElementById('btn-header-logout');
+    if (headerLogoutBtn) headerLogoutBtn.addEventListener('click', handleLogout);
 
     const viewStoreBtn = document.getElementById('btn-admin-view-store');
-    if (viewStoreBtn) {
-      viewStoreBtn.addEventListener('click', () => {
-        store.state.currentRoute = 'storefront';
-        window.location.hash = '';
-        this.render();
-      });
-    }
+    if (viewStoreBtn) viewStoreBtn.addEventListener('click', handleViewStore);
+
+    const headerViewStoreBtn = document.getElementById('btn-header-view-store');
+    if (headerViewStoreBtn) headerViewStoreBtn.addEventListener('click', handleViewStore);
 
     // Delegate dashboard events to adminPortal
     adminPortal.bindEvents();

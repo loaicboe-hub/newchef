@@ -133,8 +133,23 @@ class AdminPortal {
     `;
   }
 
+  getTabTitle(tab) {
+    switch (tab) {
+      case 'orders':
+        return 'إدارة ومتابعة الطلبات الحية';
+      case 'menu':
+        return 'قائمة الأصناف والأطباق';
+      case 'categories':
+        return 'أقسام وتصنيفات المنيو';
+      case 'customers':
+        return 'سجل العملاء والمبيعات';
+      default:
+        return 'لوحة التحكم';
+    }
+  }
+
   // =========================================================================
-  // 2. ADMIN DASHBOARD MAIN VIEW
+  // 2. ADMIN DASHBOARD MAIN VIEW (SIDEBAR ARCHITECTURE)
   // =========================================================================
   renderDashboard() {
     const s = store.state;
@@ -142,91 +157,186 @@ class AdminPortal {
       (o) => o.status === 'PENDING' || o.status === 'pending_confirmation' || o.status === 'preparing'
     ).length;
 
+    const timeStr = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+
     return `
       <div class="admin-portal-wrapper">
-        <!-- Top Sticky Admin Bar -->
-        <header class="admin-top-bar">
-          <div class="admin-logo-box">
-            <span style="font-size:1.6rem;">👑</span>
-            <div>
-              <h1 style="font-size:1.15rem; font-weight:900; color:#2D1E12; margin:0;">
-                CHEF FERGANY ADMIN
-              </h1>
-              <span class="admin-logo-badge">
-                ${s.adminUser?.role === 'SUPER_ADMIN' ? 'مدير عام السيرفر (Super Admin)' : 'مدير الفرع (Admin)'}
-              </span>
+        <!-- Mobile Sidebar Backdrop -->
+        <div class="admin-sidebar-backdrop" id="admin-sidebar-backdrop"></div>
+
+        <!-- The Dedicated Admin Sidebar -->
+        <aside class="admin-sidebar" id="admin-sidebar">
+          <!-- Brand / Header -->
+          <div class="admin-sidebar-header">
+            <div class="admin-sidebar-logo">
+              <div class="admin-logo-crown">👑</div>
+              <div class="admin-logo-texts">
+                <span class="admin-brand-name">الشيف فرجاني</span>
+                <span class="admin-portal-label">لوحة الإدارة والمطابخ</span>
+              </div>
+            </div>
+            <button class="admin-sidebar-close" id="btn-close-admin-sidebar" aria-label="إغلاق القائمة">✕</button>
+          </div>
+
+          <!-- Admin Profile Card -->
+          <div class="admin-profile-card">
+            <div class="admin-avatar">👨‍🍳</div>
+            <div class="admin-profile-info">
+              <div class="admin-profile-name">${s.adminUser?.fullName || 'الشيف محمد فرجاني'}</div>
+              <div class="admin-role-badge">
+                <span class="online-indicator"></span>
+                <span>${s.adminUser?.role === 'SUPER_ADMIN' ? 'مدير عام السيرفر' : 'مدير الفرع'}</span>
+              </div>
             </div>
           </div>
 
-          <div class="admin-top-actions">
-            <!-- Audio chime toggle -->
-            <button class="admin-action-btn" id="btn-toggle-admin-sound" title="${s.adminSoundEnabled ? 'كتم الصوت' : 'تفعيل التنبيه الصوتي'}">
-              <span>${s.adminSoundEnabled ? '🔔' : '🔕'}</span>
-              <span style="display:none; @media(min-width:600px){display:inline;}">
-                ${s.adminSoundEnabled ? 'التنبيه الصوتي شغال' : 'الصوت مكتوم'}
+          <!-- Sidebar Navigation Sections -->
+          <div class="admin-sidebar-nav">
+            <!-- Section 1: الطلبات والمتابعة -->
+            <div class="admin-nav-group-title">الطلبات والمطبخ</div>
+            <button class="admin-side-link ${s.adminTab === 'orders' ? 'active' : ''}" data-admin-tab="orders">
+              <div class="admin-link-left">
+                <span class="admin-link-icon">📋</span>
+                <span class="admin-link-text">الطلبات الحية</span>
+              </div>
+              ${
+                pendingOrdersCount > 0
+                  ? `<span class="admin-badge-count-pulse">${pendingOrdersCount}</span>`
+                  : `<span class="admin-badge-count">${this.adminOrders.length}</span>`
+              }
+            </button>
+
+            <!-- Section 2: الأصناف والمنيو -->
+            <div class="admin-nav-group-title">الأصناف والتصنيفات</div>
+            <button class="admin-side-link ${s.adminTab === 'menu' ? 'active' : ''}" data-admin-tab="menu">
+              <div class="admin-link-left">
+                <span class="admin-link-icon">🍗</span>
+                <span class="admin-link-text">قائمة الأصناف والأطباق</span>
+              </div>
+              <span class="admin-badge-count">${this.menuItems.length}</span>
+            </button>
+
+            <button class="admin-side-link ${s.adminTab === 'categories' ? 'active' : ''}" data-admin-tab="categories">
+              <div class="admin-link-left">
+                <span class="admin-link-icon">📂</span>
+                <span class="admin-link-text">أقسام وتصنيفات المنيو</span>
+              </div>
+              <span class="admin-badge-count">${this.categories.length}</span>
+            </button>
+
+            <!-- Section 3: قاعدة البيانات والعملاء -->
+            <div class="admin-nav-group-title">العملاء والتقارير</div>
+            <button class="admin-side-link ${s.adminTab === 'customers' ? 'active' : ''}" data-admin-tab="customers">
+              <div class="admin-link-left">
+                <span class="admin-link-icon">👥</span>
+                <span class="admin-link-text">سجل وقاعدة العملاء</span>
+              </div>
+              <span class="admin-badge-count">${this.customers.length || 18}</span>
+            </button>
+
+            <!-- Section 4: أدوات سريعة -->
+            <div class="admin-nav-group-title">أدوات النظام والمتجر</div>
+            <button class="admin-side-link" id="btn-toggle-admin-sound">
+              <div class="admin-link-left">
+                <span class="admin-link-icon">${s.adminSoundEnabled ? '🔔' : '🔕'}</span>
+                <span class="admin-link-text">التنبيه الصوتي</span>
+              </div>
+              <span class="admin-sound-status ${s.adminSoundEnabled ? 'enabled' : 'disabled'}">
+                ${s.adminSoundEnabled ? 'مفعل 🟢' : 'مكتوم ⚪'}
               </span>
             </button>
 
-            <!-- Storefront link -->
-            <button class="admin-action-btn" id="btn-admin-view-store">
-              <span>🏪</span>
-              <span>المتجر</span>
+            <button class="admin-side-link" id="btn-admin-view-store">
+              <div class="admin-link-left">
+                <span class="admin-link-icon">🏪</span>
+                <span class="admin-link-text">معاينة المتجر للعملاء</span>
+              </div>
+              <span class="admin-link-arrow">↗</span>
             </button>
+          </div>
 
-            <!-- Logout -->
-            <button class="admin-action-btn" id="btn-admin-logout" style="background:#FFF1F1; border-color:#FFD1D1; color:#DC2626;">
+          <!-- Sidebar Footer -->
+          <div class="admin-sidebar-footer">
+            <div class="admin-server-status">
+              <span class="server-dot"></span>
+              <span>السيرفر وقاعدة البيانات متصلة</span>
+            </div>
+            <button class="admin-logout-btn" id="btn-admin-logout">
               <span>🚪</span>
-              <span>خروج</span>
+              <span>تسجيل الخروج</span>
             </button>
           </div>
-        </header>
+        </aside>
 
-        <!-- Main Body -->
-        <div class="admin-main-layout">
-          <!-- Quick Metric Stats -->
-          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:14px; margin-bottom:24px;">
-            <div style="background:#FFFFFF; border:1.5px solid #FFE4D1; border-radius:var(--radius-lg); padding:18px; box-shadow:0 4px 16px rgba(245,122,33,0.06);">
-              <span style="font-size:0.8rem; color:#7A5E49; font-weight:800;">📦 إجمالي الطلبات</span>
-              <div style="font-size:1.7rem; font-weight:900; color:#D35400; margin-top:4px;">${this.adminOrders.length}</div>
+        <!-- Main Workspace Area -->
+        <div class="admin-main-wrapper">
+          <!-- Top Content Header -->
+          <header class="admin-content-header">
+            <div class="admin-header-left">
+              <button class="admin-mobile-toggle" id="btn-toggle-admin-sidebar" aria-label="فتح القائمة">
+                <span>☰</span>
+              </button>
+              <div class="admin-header-breadcrumbs">
+                <span class="breadcrumb-sub">لوحة الإدارة</span>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-current">${this.getTabTitle(s.adminTab)}</span>
+              </div>
             </div>
-            <div style="background:linear-gradient(145deg, #FFF6EE 0%, #FFEDE0 100%); border:1.5px solid #FFA35C; border-radius:var(--radius-lg); padding:18px; box-shadow:0 6px 18px rgba(245,122,33,0.12);">
-              <span style="font-size:0.8rem; color:#D35400; font-weight:800;">⏳ طلبات بانتظار المطبخ</span>
-              <div style="font-size:1.7rem; font-weight:900; color:#B33D00; margin-top:4px;">${pendingOrdersCount}</div>
-            </div>
-            <div style="background:#FFFFFF; border:1.5px solid #FFE4D1; border-radius:var(--radius-lg); padding:18px; box-shadow:0 4px 16px rgba(245,122,33,0.06);">
-              <span style="font-size:0.8rem; color:#7A5E49; font-weight:800;">🍗 أصناف المنيو</span>
-              <div style="font-size:1.7rem; font-weight:900; color:#D35400; margin-top:4px;">${this.menuItems.length}</div>
-            </div>
-            <div style="background:#FFFFFF; border:1.5px solid #FFE4D1; border-radius:var(--radius-lg); padding:18px; box-shadow:0 4px 16px rgba(245,122,33,0.06);">
-              <span style="font-size:0.8rem; color:#7A5E49; font-weight:800;">👥 العملاء المسجلون</span>
-              <div style="font-size:1.7rem; font-weight:900; color:#D35400; margin-top:4px;">${this.customers.length || 18}</div>
-            </div>
-          </div>
 
-          <!-- Tabs Navigation -->
-          <div class="admin-tabs-nav">
-            <button class="admin-nav-tab ${s.adminTab === 'orders' ? 'active' : ''}" data-admin-tab="orders">
-              <span>📋</span>
-              <span>الطلبات الحية</span>
-              <span style="background:#FFF1E6; color:#D35400; border:1px solid #FFDEC9; padding:2px 8px; border-radius:10px; font-size:0.75rem; font-weight:800;">${pendingOrdersCount}</span>
-            </button>
-            <button class="admin-nav-tab ${s.adminTab === 'menu' ? 'active' : ''}" data-admin-tab="menu">
-              <span>🍗</span>
-              <span>قائمة الأطباق والأصناف</span>
-            </button>
-            <button class="admin-nav-tab ${s.adminTab === 'categories' ? 'active' : ''}" data-admin-tab="categories">
-              <span>📂</span>
-              <span>أقسام المنيو</span>
-            </button>
-            <button class="admin-nav-tab ${s.adminTab === 'customers' ? 'active' : ''}" data-admin-tab="customers">
-              <span>👥</span>
-              <span>سجل العملاء والمبيعات</span>
-            </button>
-          </div>
+            <div class="admin-header-actions">
+              <div class="admin-live-clock">
+                <span>⏱️</span>
+                <span>${timeStr}</span>
+              </div>
 
-          <!-- Active Tab Content -->
-          <div class="admin-tab-content">
-            ${this.renderActiveTabContent()}
+              <button class="admin-header-action-btn" id="btn-header-view-store" title="معاينة المتجر">
+                <span>🏪 المتجر</span>
+              </button>
+
+              <button class="admin-header-action-btn logout" id="btn-header-logout" title="تسجيل الخروج">
+                <span>🚪 خروج</span>
+              </button>
+            </div>
+          </header>
+
+          <!-- Main Content Body -->
+          <div class="admin-content-body">
+            <!-- Quick Metrics Grid -->
+            <div class="admin-metrics-row">
+              <div class="admin-metric-card">
+                <div class="metric-icon-box orange">📦</div>
+                <div class="metric-info">
+                  <span class="metric-label">إجمالي الطلبات</span>
+                  <div class="metric-val">${this.adminOrders.length}</div>
+                </div>
+              </div>
+              <div class="admin-metric-card highlighted">
+                <div class="metric-icon-box fiery">⏳</div>
+                <div class="metric-info">
+                  <span class="metric-label">طلبات بانتظار المطبخ</span>
+                  <div class="metric-val">${pendingOrdersCount}</div>
+                </div>
+              </div>
+              <div class="admin-metric-card">
+                <div class="metric-icon-box green">🍗</div>
+                <div class="metric-info">
+                  <span class="metric-label">أصناف المنيو</span>
+                  <div class="metric-val">${this.menuItems.length}</div>
+                </div>
+              </div>
+              <div class="admin-metric-card">
+                <div class="metric-icon-box blue">👥</div>
+                <div class="metric-info">
+                  <span class="metric-label">العملاء المسجلون</span>
+                  <div class="metric-val">${this.customers.length || 18}</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Active View Container -->
+            <div class="admin-active-view-container">
+              ${this.renderActiveTabContent()}
+            </div>
           </div>
         </div>
 
@@ -744,6 +854,26 @@ class AdminPortal {
   // EVENT LISTENERS FOR DASHBOARD
   // =========================================================================
   bindEvents() {
+    // 0. Mobile Sidebar Drawer toggle & backdrop
+    const toggleSidebarBtn = document.getElementById('btn-toggle-admin-sidebar');
+    const closeSidebarBtn = document.getElementById('btn-close-admin-sidebar');
+    const sidebar = document.getElementById('admin-sidebar');
+    const sidebarBackdrop = document.getElementById('admin-sidebar-backdrop');
+
+    const openSidebar = () => {
+      if (sidebar) sidebar.classList.add('open');
+      if (sidebarBackdrop) sidebarBackdrop.classList.add('open');
+    };
+
+    const closeSidebar = () => {
+      if (sidebar) sidebar.classList.remove('open');
+      if (sidebarBackdrop) sidebarBackdrop.classList.remove('open');
+    };
+
+    if (toggleSidebarBtn) toggleSidebarBtn.onclick = openSidebar;
+    if (closeSidebarBtn) closeSidebarBtn.onclick = closeSidebar;
+    if (sidebarBackdrop) sidebarBackdrop.onclick = closeSidebar;
+
     // 1. Audio chime toggle
     const soundBtn = document.getElementById('btn-toggle-admin-sound');
     if (soundBtn) {
@@ -759,6 +889,7 @@ class AdminPortal {
     // 2. Tabs navigation
     document.querySelectorAll('[data-admin-tab]').forEach((tabBtn) => {
       tabBtn.addEventListener('click', () => {
+        closeSidebar();
         const tab = tabBtn.dataset.adminTab;
         store.setAdminTab(tab);
       });
@@ -884,10 +1015,10 @@ class AdminPortal {
     const closeBtn = document.getElementById('btn-close-dish-modal');
     if (closeBtn) closeBtn.addEventListener('click', closeDishModal);
 
-    const backdrop = document.getElementById('dish-modal-backdrop');
-    if (backdrop) {
-      backdrop.addEventListener('click', (e) => {
-        if (e.target === backdrop) closeDishModal();
+    const dishModalBackdrop = document.getElementById('dish-modal-backdrop');
+    if (dishModalBackdrop) {
+      dishModalBackdrop.addEventListener('click', (e) => {
+        if (e.target === dishModalBackdrop) closeDishModal();
       });
     }
 
