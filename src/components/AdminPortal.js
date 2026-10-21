@@ -18,6 +18,8 @@ class AdminPortal {
     this.isDishModalOpen = false;
     this.audioCtx = null;
     this.lastOrderCount = 0;
+    this.uploadedImageFile = null;
+    this.uploadedImagePreview = '';
   }
 
   // Pure Web Audio API Chime for incoming orders (No external mp3 file needed!)
@@ -636,6 +638,7 @@ class AdminPortal {
   renderDishModal() {
     const dish = this.editingDish || {};
     const isEdit = Boolean(this.editingDish);
+    const imagePreview = this.uploadedImagePreview || dish.imageUrl || dish.image || '';
 
     return `
       <div class="client-auth-backdrop" id="dish-modal-backdrop">
@@ -676,9 +679,44 @@ class AdminPortal {
               </div>
             </div>
 
+            <!-- DIRECT IMAGE UPLOAD SECTION (NO TEXT LINK) -->
             <div class="auth-form-group">
-              <label class="auth-form-label">رابط صورة الطبق</label>
-              <input type="text" class="auth-form-input" id="dish-image" value="${dish.imageUrl || dish.image || ''}" placeholder="/assets/dishes/... أو رابط خارجي" />
+              <label class="auth-form-label">صورة الطبق (رفع مباشر من جهازك) *</label>
+              <div class="admin-image-upload-zone" id="dish-image-dropzone">
+                <input 
+                  type="file" 
+                  id="dish-image-file-input" 
+                  accept="image/jpeg,image/png,image/webp,image/jpg" 
+                  style="display:none;" 
+                />
+
+                <div id="dish-image-preview-container">
+                  ${
+                    imagePreview
+                      ? `
+                    <div class="dish-preview-wrapper">
+                      <img src="${imagePreview}" alt="صورة الصنف" id="dish-preview-img" class="dish-preview-image" />
+                      <div class="dish-preview-actions">
+                        <button type="button" class="admin-action-btn" id="btn-trigger-file-select" style="padding:6px 14px; font-size:0.78rem;">
+                          📷 تغيير الصورة
+                        </button>
+                        <button type="button" class="admin-action-btn" id="btn-remove-dish-image" style="padding:6px 14px; font-size:0.78rem; background:#FFF1F1; border-color:#FFD1D1; color:#DC2626;">
+                          🗑️ حذف
+                        </button>
+                      </div>
+                    </div>
+                  `
+                      : `
+                    <div class="dish-upload-placeholder" id="dish-upload-placeholder">
+                      <div class="upload-icon-circle">📸</div>
+                      <span class="upload-main-text">اضغط لرفع صورة الطبق من جهازك</span>
+                      <span class="upload-sub-text">أو اسحب الصورة وأفلتها هنا (JPG, PNG, WEBP)</span>
+                      <span class="upload-badge-tag">يتم تحسينها وضغطها تلقائياً على السيرفر</span>
+                    </div>
+                  `
+                  }
+                </div>
+              </div>
             </div>
 
             <div class="auth-form-group">
@@ -794,6 +832,8 @@ class AdminPortal {
     if (addDishBtn) {
       addDishBtn.addEventListener('click', () => {
         this.editingDish = null;
+        this.uploadedImageFile = null;
+        this.uploadedImagePreview = '';
         this.isDishModalOpen = true;
         store.notify();
       });
@@ -806,6 +846,8 @@ class AdminPortal {
         const dish = this.menuItems.find((d) => d.id === dishId || d.titleAr === dishId || d.title_ar === dishId);
         if (dish) {
           this.editingDish = dish;
+          this.uploadedImageFile = null;
+          this.uploadedImagePreview = dish.imageUrl || dish.image || '';
           this.isDishModalOpen = true;
           store.notify();
         }
@@ -834,6 +876,8 @@ class AdminPortal {
     const closeDishModal = () => {
       this.isDishModalOpen = false;
       this.editingDish = null;
+      this.uploadedImageFile = null;
+      this.uploadedImagePreview = '';
       store.notify();
     };
 
@@ -847,7 +891,129 @@ class AdminPortal {
       });
     }
 
-    // 11. Dish form submit
+    // 11. Image Upload Dropzone & File Handling in Dish Modal
+    if (this.isDishModalOpen) {
+      const handleImageFile = (file) => {
+        if (!file) return;
+        const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
+        if (!validTypes.includes(file.type)) {
+          store.showToast('يرجى اختيار ملف صورة صالح (JPG, PNG, WEBP)', 'error');
+          return;
+        }
+        if (file.size > 8 * 1024 * 1024) {
+          store.showToast('حجم الصورة كبير جداً، الحد الأقصى 8 ميجابايت', 'error');
+          return;
+        }
+        this.uploadedImageFile = file;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.uploadedImagePreview = e.target.result;
+          updatePreviewUI();
+        };
+        reader.readAsDataURL(file);
+      };
+
+      const updatePreviewUI = () => {
+        const container = document.getElementById('dish-image-preview-container');
+        if (!container) return;
+        if (this.uploadedImagePreview) {
+          container.innerHTML = `
+            <div class="dish-preview-wrapper">
+              <img src="${this.uploadedImagePreview}" alt="معاينة صورة الصنف" class="dish-preview-image" id="dish-preview-img" />
+              <div class="dish-preview-actions">
+                <button type="button" class="admin-action-btn" id="btn-trigger-file-select" style="padding:6px 14px; font-size:0.78rem;">
+                  📷 تغيير الصورة
+                </button>
+                <button type="button" class="admin-action-btn" id="btn-remove-dish-image" style="padding:6px 14px; font-size:0.78rem; background:#FFF1F1; border-color:#FFD1D1; color:#DC2626;">
+                  🗑️ حذف
+                </button>
+              </div>
+            </div>
+          `;
+          bindUploadButtons();
+        } else {
+          container.innerHTML = `
+            <div class="dish-upload-placeholder" id="dish-upload-placeholder">
+              <div class="upload-icon-circle">📸</div>
+              <span class="upload-main-text">اضغط لرفع صورة الطبق من جهازك</span>
+              <span class="upload-sub-text">أو اسحب الصورة وأفلتها هنا (JPG, PNG, WEBP)</span>
+              <span class="upload-badge-tag">يتم تحسينها وضغطها تلقائياً على السيرفر</span>
+            </div>
+          `;
+          bindUploadButtons();
+        }
+      };
+
+      const bindUploadButtons = () => {
+        const changeBtn = document.getElementById('btn-trigger-file-select');
+        if (changeBtn) {
+          changeBtn.onclick = (e) => {
+            e.stopPropagation();
+            const input = document.getElementById('dish-image-file-input');
+            if (input) input.click();
+          };
+        }
+
+        const removeBtn = document.getElementById('btn-remove-dish-image');
+        if (removeBtn) {
+          removeBtn.onclick = (e) => {
+            e.stopPropagation();
+            this.uploadedImageFile = null;
+            this.uploadedImagePreview = '';
+            const input = document.getElementById('dish-image-file-input');
+            if (input) input.value = '';
+            updatePreviewUI();
+          };
+        }
+
+        const placeholder = document.getElementById('dish-upload-placeholder');
+        if (placeholder) {
+          placeholder.onclick = () => {
+            const input = document.getElementById('dish-image-file-input');
+            if (input) input.click();
+          };
+        }
+      };
+
+      bindUploadButtons();
+
+      const fileInput = document.getElementById('dish-image-file-input');
+      if (fileInput) {
+        fileInput.addEventListener('change', (e) => {
+          if (e.target.files && e.target.files[0]) {
+            handleImageFile(e.target.files[0]);
+          }
+        });
+      }
+
+      const dropzone = document.getElementById('dish-image-dropzone');
+      if (dropzone) {
+        ['dragenter', 'dragover'].forEach((eventName) => {
+          dropzone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.classList.add('dragover');
+          });
+        });
+
+        ['dragleave', 'drop'].forEach((eventName) => {
+          dropzone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.classList.remove('dragover');
+          });
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+          const dt = e.dataTransfer;
+          if (dt && dt.files && dt.files[0]) {
+            handleImageFile(dt.files[0]);
+          }
+        });
+      }
+    }
+
+    // 12. Dish form submit
     const dishForm = document.getElementById('admin-dish-form');
     if (dishForm) {
       dishForm.addEventListener('submit', async (e) => {
@@ -856,9 +1022,26 @@ class AdminPortal {
         const titleEn = document.getElementById('dish-title-en')?.value?.trim();
         const price = parseFloat(document.getElementById('dish-price')?.value) || 0;
         const categoryId = document.getElementById('dish-category')?.value;
-        const imageUrl = document.getElementById('dish-image')?.value?.trim() || '/assets/dishes/hamam_mahshi_dish.jpg';
         const descAr = document.getElementById('dish-desc-ar')?.value?.trim();
         const isAvailable = document.getElementById('dish-available')?.checked;
+
+        const fallbackDefault = '/assets/dishes/hamam_mahshi_dish.jpg';
+        const finalImage = this.uploadedImagePreview || (this.editingDish ? (this.editingDish.imageUrl || this.editingDish.image) : fallbackDefault);
+
+        // Prepare FormData for upload (supports direct binary file upload via Multer)
+        const formData = new FormData();
+        formData.append('title_ar', titleAr);
+        formData.append('title_en', titleEn || '');
+        formData.append('price', String(price));
+        formData.append('categoryId', categoryId);
+        formData.append('description_ar', descAr || '');
+        formData.append('isAvailable', String(isAvailable));
+
+        if (this.uploadedImageFile) {
+          formData.append('image', this.uploadedImageFile);
+        } else if (finalImage && !finalImage.startsWith('data:')) {
+          formData.append('imageUrl', finalImage);
+        }
 
         if (this.editingDish) {
           // Update existing
@@ -868,24 +1051,20 @@ class AdminPortal {
           this.editingDish.titleEn = titleEn;
           this.editingDish.price = price;
           this.editingDish.categoryId = categoryId;
-          this.editingDish.imageUrl = imageUrl;
-          this.editingDish.image = imageUrl;
+          this.editingDish.imageUrl = finalImage;
+          this.editingDish.image = finalImage;
           this.editingDish.description_ar = descAr;
           this.editingDish.descriptionAr = descAr;
           this.editingDish.isAvailable = isAvailable;
 
           try {
-            await api.adminUpdateMenuItem(this.editingDish.id, {
-              title_ar: titleAr,
-              title_en: titleEn,
-              price,
-              categoryId,
-              imageUrl,
-              description_ar: descAr,
-              isAvailable
-            });
+            const res = await api.adminUpdateMenuItem(this.editingDish.id, formData);
+            if (res && res.imageUrl) {
+              this.editingDish.imageUrl = res.imageUrl;
+              this.editingDish.image = res.imageUrl;
+            }
           } catch (e) {
-            // fallback
+            // fallback retains local image preview
           }
           store.showToast('تم حفظ تعديلات الصنف بنجاح', 'success');
         } else {
@@ -898,8 +1077,8 @@ class AdminPortal {
             titleEn: titleEn,
             price,
             categoryId,
-            imageUrl,
-            image: imageUrl,
+            imageUrl: finalImage,
+            image: finalImage,
             description_ar: descAr,
             descriptionAr: descAr,
             isAvailable
@@ -907,23 +1086,24 @@ class AdminPortal {
           this.menuItems.unshift(newDish);
 
           try {
-            await api.adminCreateMenuItem({
-              title_ar: titleAr,
-              title_en: titleEn,
-              price,
-              categoryId,
-              imageUrl,
-              description_ar: descAr,
-              isAvailable
-            });
+            const res = await api.adminCreateMenuItem(formData);
+            if (res && res.imageUrl) {
+              newDish.imageUrl = res.imageUrl;
+              newDish.image = res.imageUrl;
+            }
+            if (res && res.id) {
+              newDish.id = res.id;
+            }
           } catch (e) {
-            // fallback
+            // fallback retains local new dish
           }
           store.showToast('تمت إضافة الصنف الجديد للمنيو بنجاح', 'success');
         }
 
         this.isDishModalOpen = false;
         this.editingDish = null;
+        this.uploadedImageFile = null;
+        this.uploadedImagePreview = '';
         store.notify();
       });
     }

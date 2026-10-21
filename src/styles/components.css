@@ -3786,3 +3786,90 @@ html[dir="ltr"] .footer-heading::after {
   box-shadow: 0 4px 14px rgba(245, 122, 33, 0.12);
 }
 
+/* ==========================================================================
+   28. ADMIN DISH IMAGE UPLOAD DROPZONE
+   ========================================================================== */
+.admin-image-upload-zone {
+  border: 2px dashed #FFCBA4;
+  background: #FFFBF8;
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-image-upload-zone:hover,
+.admin-image-upload-zone.dragover {
+  border-color: var(--color-primary);
+  background: #FFF5EC;
+  box-shadow: 0 4px 16px rgba(245, 122, 33, 0.12);
+}
+
+.dish-upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 10px;
+}
+
+.upload-icon-circle {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FFF1E6 0%, #FFE2CC 100%);
+  border: 1px solid #FFC499;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  margin-bottom: 4px;
+  box-shadow: 0 2px 8px rgba(245, 122, 33, 0.1);
+}
+
+.upload-main-text {
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: #D35400;
+}
+
+.upload-sub-text {
+  font-size: 0.78rem;
+  color: #7A5E49;
+}
+
+.upload-badge-tag {
+  margin-top: 4px;
+  background: #FFF1E6;
+  border: 1px solid #FFDEC9;
+  color: #D35400;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+
+.dish-preview-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 6px;
+}
+
+.dish-preview-image {
+  width: 140px;
+  height: 140px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  border: 2px solid #FFD4B2;
+  box-shadow: 0 4px 16px rgba(245, 122, 33, 0.15);
+}
+
+.dish-preview-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
