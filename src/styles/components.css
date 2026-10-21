@@ -336,25 +336,179 @@ html[dir="ltr"] .desktop-search-icon {
 .mobile-header-bar {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 10px 16px;
+  gap: 8px;
+  padding: 8px 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .mobile-header-top-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
+  gap: 8px;
+  box-sizing: border-box;
+}
+
+.mobile-header-bar .brand-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.mobile-header-bar .brand-logo-img {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  background: #FFF;
+  padding: 2px;
+  border: 1px solid var(--color-bg-warm);
+  flex-shrink: 0;
+}
+
+.mobile-header-bar .brand-title-group h1 {
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: var(--color-text-dark);
+  line-height: 1.1;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.mobile-header-bar .brand-title-group .slogan-tag {
+  font-size: 0.65rem;
+  color: var(--color-primary);
+  font-weight: 700;
+  display: block;
+  white-space: nowrap;
+  line-height: 1;
+  margin-top: 2px;
 }
 
 .mobile-header-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  flex-shrink: 0;
+  flex-wrap: nowrap;
+}
+
+/* Distinct Prominent Language Switcher with Icon on Mobile */
+.mobile-lang-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 9px;
+  border-radius: var(--radius-full);
+  background: #FFF4EB;
+  border: 1.5px solid #FFDEC9;
+  color: var(--color-primary);
+  font-size: 0.76rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: 0 1px 4px rgba(245, 122, 33, 0.08);
+  font-family: inherit;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.mobile-lang-btn:hover,
+.mobile-lang-btn:active {
+  background: #FFEAD9;
+  border-color: var(--color-primary);
+  color: var(--color-primary-hover);
+}
+
+.mobile-lang-btn .lang-icon {
+  font-size: 0.92rem;
+  line-height: 1;
+}
+
+/* Compact Branch Pill on Mobile */
+.mobile-branch-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #FFFFFF;
+  border: 1px solid var(--color-bg-warm);
+  border-radius: var(--radius-full);
+  padding: 5px 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  cursor: pointer;
+  box-shadow: var(--shadow-subtle);
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-family: inherit;
+}
+
+.mobile-branch-pill:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.mobile-branch-pill .loc-icon {
+  color: var(--color-primary);
+  font-size: 0.85rem;
+}
+
+/* Compact Mobile Cart Button */
+.mobile-cart-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  color: #FFFFFF;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(245, 122, 33, 0.3);
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+  font-family: inherit;
+}
+
+.mobile-cart-btn:hover {
+  background: var(--color-primary-hover);
+  transform: translateY(-1px);
+}
+
+.mobile-cart-btn .nav-cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #DC2626;
+  color: #FFF;
+  font-size: 0.65rem;
+  font-weight: 900;
+  min-width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #FFF;
+}
+
+html[dir="ltr"] .mobile-cart-btn .nav-cart-badge {
+  right: auto;
+  left: -4px;
 }
 
 .icon-circle-btn {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border-radius: var(--radius-full);
   background: var(--color-white);
   border: 1px solid var(--color-bg-warm);
@@ -362,7 +516,7 @@ html[dir="ltr"] .desktop-search-icon {
   align-items: center;
   justify-content: center;
   color: var(--color-text-dark);
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   position: relative;
   box-shadow: var(--shadow-subtle);
   cursor: pointer;
@@ -376,6 +530,8 @@ html[dir="ltr"] .desktop-search-icon {
   padding: 4px 14px;
   border: 1px solid var(--color-bg-warm);
   box-shadow: inset 0 1px 3px rgba(0,0,0,0.03);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .header-search-bar input {
@@ -383,14 +539,16 @@ html[dir="ltr"] .desktop-search-icon {
   border: none;
   background: transparent;
   padding: 6px 8px;
-  font-size: 0.88rem;
+  font-size: 0.84rem;
   color: var(--color-text-dark);
   box-shadow: none !important;
+  min-width: 0;
 }
 
 .header-search-bar .search-icon {
   color: var(--color-text-light);
-  font-size: 1rem;
+  font-size: 0.95rem;
+  flex-shrink: 0;
 }
 
 /* ==========================================================================

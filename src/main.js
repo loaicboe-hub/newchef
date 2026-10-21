@@ -450,27 +450,29 @@ class ChefApp {
           <div class="mobile-header-bar">
             <div class="mobile-header-top-row">
               <div class="brand-badge" id="btn-brand-home-mobile">
-                <img src="/assets/chef-fergany-logo.jpg" alt="Logo Chef Fergany" class="brand-logo-img" style="width:42px; height:42px;" />
+                <img src="/assets/chef-fergany-logo.jpg" alt="Logo Chef Fergany" class="brand-logo-img" />
                 <div class="brand-title-group">
-                  <h1 style="font-size:1.05rem;">CHEF FERGANY</h1>
+                  <h1>CHEF FERGANY</h1>
                   <span class="slogan-tag">${this.t('الشيف في بيتك', 'The Chef In Your Home')}</span>
                 </div>
               </div>
 
               <div class="mobile-header-actions">
-                <button class="branch-select-btn" id="btn-select-branch-mobile" style="padding:5px 9px; font-size:0.72rem; white-space:nowrap;">
+                <!-- 1. Dedicated & Prominent Language Toggle with Globe Icon -->
+                <button class="mobile-lang-btn" id="btn-lang-toggle-mobile" title="${this.t('تغيير لغة الموقع', 'Switch Website Language')}">
+                  <span class="lang-icon">🌐</span>
+                  <span class="lang-text">${s.lang === 'ar' ? 'EN' : 'عربي'}</span>
+                </button>
+
+                <!-- 2. Compact Branch Selector -->
+                <button class="mobile-branch-pill" id="btn-select-branch-mobile" title="${this.t('الفروع والتوصيل', 'Branches & Delivery')}">
                   <span class="loc-icon">📍</span>
-                  <span>${this.t('الفروع والتوصيل', 'Branches & Delivery')}</span>
+                  <span class="branch-name">${this.t('الهرم', 'Haram')}</span>
                 </button>
 
-                <button class="icon-circle-btn" id="btn-lang-toggle-mobile" title="${this.t('اللغة', 'Language')}">
-                  <span style="font-size:0.78rem; font-weight:800; color:var(--color-primary);">
-                    ${s.lang === 'ar' ? 'EN' : 'عربي'}
-                  </span>
-                </button>
-
-                <button class="icon-circle-btn" data-nav="cart" title="${this.t('السلة', 'Cart')}" style="background:var(--color-primary); color:#FFF; border-color:var(--color-primary);">
-                  <span style="font-size:1.05rem;">🛒</span>
+                <!-- 3. Mobile Cart Icon Button -->
+                <button class="mobile-cart-btn" data-nav="cart" title="${this.t('سلة المشتريات', 'Shopping Cart')}">
+                  <span>🛒</span>
                   ${cartCount > 0 ? `<span class="nav-cart-badge">${cartCount}</span>` : ''}
                 </button>
               </div>
