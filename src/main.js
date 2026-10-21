@@ -362,11 +362,6 @@ class ChefApp {
             </div>
 
             <div class="top-bar-actions">
-              <a href="#admin" class="top-bar-admin-btn" title="${this.t('لوحة الإدارة', 'Admin Portal')}">
-                <span>👑</span>
-                <span>${this.t('الإدارة', 'Admin')}</span>
-              </a>
-
               <button class="top-bar-lang-btn" id="btn-lang-toggle" data-action="toggle-lang" title="${this.t('تغيير اللغة', 'Switch Language')}">
                 <span class="lang-icon">🌐</span>
                 <span class="lang-text">${s.lang === 'ar' ? 'English' : 'عربي'}</span>
