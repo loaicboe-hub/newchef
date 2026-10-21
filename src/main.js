@@ -4,6 +4,9 @@ import { CATEGORIES, PRODUCTS } from './data/products.js';
 import { BRANCHES, DELIVERY_ZONES } from './data/branches.js';
 import { AVAILABLE_COUPONS } from './data/coupons.js';
 import { store } from './store/state.js';
+import { api } from './services/api.js';
+import { adminPortal } from './components/AdminPortal.js';
+import { clientAuthModal } from './components/ClientAuthModal.js';
 
 import './styles/variables.css';
 import './styles/base.css';
@@ -23,6 +26,21 @@ class ChefApp {
     const currentLang = store.state.lang;
     document.documentElement.lang = currentLang;
     document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+
+    // Hash route listener for #admin
+    const checkHashRoute = () => {
+      const isHashAdmin = window.location.hash.startsWith('#admin');
+      store.state.currentRoute = isHashAdmin ? 'admin' : 'storefront';
+      if (isHashAdmin) {
+        adminPortal.loadData();
+      }
+      this.render();
+    };
+
+    window.addEventListener('hashchange', checkHashRoute);
+    if (window.location.hash.startsWith('#admin')) {
+      adminPortal.loadData();
+    }
 
     // Subscribe to state changes
     store.subscribe(() => {
@@ -264,6 +282,18 @@ class ChefApp {
   render() {
     const s = store.state;
 
+    // Check if current route is Admin
+    if (s.currentRoute === 'admin' || window.location.hash.startsWith('#admin')) {
+      if (!s.adminUser) {
+        this.appRoot.innerHTML = adminPortal.renderLogin() + this.renderToast();
+        this.bindAdminLoginEvents();
+        return;
+      }
+      this.appRoot.innerHTML = adminPortal.renderDashboard() + this.renderToast();
+      this.bindAdminDashboardEvents();
+      return;
+    }
+
     this.appRoot.innerHTML = `
       <!-- 1. TOP UTILITY BAR (Desktop & Tablet) -->
       ${this.renderSiteTopBar()}
@@ -315,6 +345,10 @@ class ChefApp {
             </div>
 
             <div class="top-bar-actions">
+              <a href="#admin" class="top-bar-admin-btn" style="color:#FFA35C; font-size:0.76rem; font-weight:800; text-decoration:none; margin-inline-end:14px; display:inline-flex; align-items:center; gap:5px;">
+                <span>👑</span>
+                <span>${this.t('لوحة الإدارة', 'Admin Portal')}</span>
+              </a>
 
               <button class="top-bar-lang-btn" id="btn-lang-toggle" title="${this.t('تغيير اللغة', 'Switch Language')}">
                 ${s.lang === 'ar' ? 'English' : 'عربي'}
@@ -393,10 +427,14 @@ class ChefApp {
 
             <!-- Desktop Action Buttons -->
             <div class="desktop-actions-group">
+              <button class="desktop-action-btn" id="btn-open-client-auth" title="${s.clientUser ? s.clientUser.fullName : this.t('تسجيل الدخول', 'Login')}">
+                <span>${s.clientUser ? '👤' : '🔑'}</span>
+                <span>${s.clientUser ? s.clientUser.fullName.split(' ')[0] : this.t('دخول / تسجيل', 'Sign In')}</span>
+              </button>
 
               <button class="desktop-action-btn" data-nav="profile" title="${this.t('الملف الشخصي', 'Profile')}">
-                <span>👤</span>
-                <span>${this.t('حسابي', 'Account')}</span>
+                <span>📋</span>
+                <span>${this.t('طلباتي', 'Orders')}</span>
               </button>
 
               <!-- Desktop Cart Pill Button -->
@@ -1402,23 +1440,48 @@ class ChefApp {
   // =========================================================================
   renderProfileTab() {
     const s = store.state;
-    const u = s.user;
+    const isClientLoggedIn = Boolean(s.clientUser);
+    const displayName = isClientLoggedIn ? s.clientUser.fullName : s.user.name;
+    const displayPhone = isClientLoggedIn ? s.clientUser.phone : s.user.phone;
 
     return `
       <div class="animate-fade" style="padding: 24px 0 40px; max-width:850px; margin:0 auto;">
         <!-- PROFILE CARD -->
-        <div style="background:var(--color-white); border-radius:var(--radius-xl); padding:24px; border:1px solid var(--color-bg-warm); box-shadow:var(--shadow-card); display:flex; align-items:center; gap:20px; margin-bottom:24px;">
+        <div style="background:var(--color-white); border-radius:var(--radius-xl); padding:24px; border:1px solid var(--color-bg-warm); box-shadow:var(--shadow-card); display:flex; align-items:center; gap:20px; margin-bottom:24px; flex-wrap:wrap;">
           <div style="width:76px; height:76px; border-radius:50%; background:var(--color-primary-soft); color:var(--color-primary); display:flex; align-items:center; justify-content:center; font-size:2.2rem; font-weight:900; border:3px solid var(--color-primary);">
             👤
           </div>
-          <div style="flex:1;">
-            <h2 style="font-size:1.3rem; font-weight:900; margin-bottom:4px;">${u.name}</h2>
-            <span style="font-size:0.9rem; color:var(--color-text-muted); display:block;"><bdi dir="ltr" style="direction:ltr; unicode-bidi:isolate; display:inline-block;">${u.phone}</bdi></span>
-            <span style="font-size:0.8rem; color:var(--color-text-light);">${u.street}</span>
+          <div style="flex:1; min-width:200px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <h2 style="font-size:1.3rem; font-weight:900; margin-bottom:4px;">${displayName}</h2>
+              ${
+                isClientLoggedIn
+                  ? `<span style="background:rgba(34,197,94,0.15); color:#16A34A; border:1px solid rgba(34,197,94,0.3); font-size:0.75rem; padding:2px 8px; border-radius:12px; font-weight:800;">✓ ${this.t('عميل مسجل', 'Verified')}</span>`
+                  : `<span style="background:rgba(245,122,33,0.12); color:var(--color-primary); border:1px solid var(--color-primary-border); font-size:0.75rem; padding:2px 8px; border-radius:12px; font-weight:800;">${this.t('طلب كزائر', 'Guest')}</span>`
+              }
+            </div>
+            <span style="font-size:0.9rem; color:var(--color-text-muted); display:block;"><bdi dir="ltr" style="direction:ltr; unicode-bidi:isolate; display:inline-block;">${displayPhone}</bdi></span>
+            <span style="font-size:0.8rem; color:var(--color-text-light);">${s.user.street}</span>
           </div>
-          <button id="btn-edit-user-profile" class="desktop-action-btn">
-            ${this.t('تعديل البيانات ✏️', 'Edit Profile ✏️')}
-          </button>
+
+          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+            <button id="btn-edit-user-profile" class="desktop-action-btn">
+              ${this.t('تعديل العنوان ✏️', 'Edit Address ✏️')}
+            </button>
+            ${
+              isClientLoggedIn
+                ? `
+              <button id="btn-client-logout" class="desktop-action-btn" style="color:#EF4444; border-color:rgba(239,68,68,0.3);">
+                ${this.t('تسجيل الخروج 🚪', 'Sign Out 🚪')}
+              </button>
+            `
+                : `
+              <button id="btn-profile-login-banner" class="desktop-action-btn" style="background:var(--color-primary); color:#FFF; border-color:var(--color-primary);">
+                ${this.t('دخول / تسجيل 🔑', 'Sign In / Register 🔑')}
+              </button>
+            `
+            }
+          </div>
         </div>
 
         <!-- QUICK METRICS ROW -->
@@ -1557,6 +1620,7 @@ class ChefApp {
                 <li class="footer-link-item"><button data-nav="orders">${this.t('متابعة حالة الطلب الحالي', 'Track Active Order')}</button></li>
                 <li class="footer-link-item"><button data-nav="profile">${this.t('حسابي وإدارة العناوين', 'My Account & Addresses')}</button></li>
                 <li class="footer-link-item"><a href="https://wa.me/201040925170" target="_blank">${this.t('الدعم الفوري عبر واتساب', 'Direct WhatsApp Support')}</a></li>
+                <li class="footer-link-item"><a href="#admin" style="color:var(--color-primary); font-weight:700;">🛡️ ${this.t('بوابة الإدارة والمطابخ (Admin)', 'Kitchen Admin Portal')}</a></li>
               </ul>
             </div>
 
@@ -1585,8 +1649,11 @@ class ChefApp {
           <!-- Bottom Copyright & Payment Methods -->
           <div class="footer-bottom-bar">
             <div class="footer-bottom-inner">
-              <div class="footer-copy-text">
-                © 2026 ${this.t('مطابخ ومعارض الشيف محمد فرجاني (الشيف في بيتك). جميع الحقوق محفوظة.', 'Chef Mohamed Fergany Kitchens. All rights reserved.')}
+              <div class="footer-copy-text" style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                <span>© 2026 ${this.t('مطابخ ومعارض الشيف محمد فرجاني (الشيف في بيتك). جميع الحقوق محفوظة.', 'Chef Mohamed Fergany Kitchens. All rights reserved.')}</span>
+                <a href="#admin" style="color:#FFA35C; font-size:0.75rem; text-decoration:none; opacity:0.85; font-weight:800; border:1px solid rgba(255,163,92,0.3); padding:2px 8px; border-radius:4px;">
+                  🛡️ ${this.t('لوحة التحكم (Admin)', 'Admin')}
+                </a>
               </div>
 
               <div class="footer-payment-badges">
@@ -1670,6 +1737,10 @@ class ChefApp {
     if (!s.activeModal) return '';
 
     const { type, data } = s.activeModal;
+
+    if (type === 'clientAuth') {
+      return clientAuthModal.render();
+    }
 
     return `
       <div class="modal-overlay" id="modal-backdrop">
@@ -1831,6 +1902,9 @@ class ChefApp {
       }
 
       case 'checkout': {
+        const isClientLoggedIn = Boolean(s.clientUser);
+        const custName = isClientLoggedIn ? s.clientUser.fullName : s.user.name;
+        const custPhone = isClientLoggedIn ? s.clientUser.phone : s.user.phone;
         const u = s.user;
         const total = store.getCartTotal();
 
@@ -1851,15 +1925,33 @@ class ChefApp {
               </div>
             </div>
 
+            ${
+              isClientLoggedIn
+                ? `
+              <div style="background:rgba(34,197,94,0.08); border:1px solid rgba(34,197,94,0.25); border-radius:var(--radius-sm); padding:10px 14px; font-size:0.8rem; color:#16A34A; display:flex; align-items:center; gap:8px; margin-bottom:14px;">
+                <span>✓</span>
+                <span>${this.t('طلب عميل مسجل: ' + custPhone + ' (حفظ تلقائي للطلب في حسابك)', 'Signed in as: ' + custPhone)}</span>
+              </div>
+            `
+                : `
+              <div style="background:rgba(245,122,33,0.08); border:1px solid rgba(245,122,33,0.2); border-radius:var(--radius-sm); padding:10px 14px; font-size:0.8rem; color:var(--color-primary); display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+                <span>${this.t('طلب كزائر بدون تسجيل (أو سجل لتتبع طلباتك)', 'Guest checkout (or login to track orders)')}</span>
+                <button type="button" id="btn-checkout-switch-login" style="background:none; border:none; color:var(--color-primary); font-weight:800; cursor:pointer; text-decoration:underline;">
+                  ${this.t('تسجيل الدخول', 'Sign In')}
+                </button>
+              </div>
+            `
+            }
+
             <form id="checkout-form" style="display:flex; flex-direction:column; gap:14px;">
               <div>
                 <label style="font-size:0.82rem; font-weight:800; display:block; margin-bottom:4px;">${this.t('الاسم بالكامل', 'Full Name')} *</label>
-                <input type="text" name="customerName" value="${u.name}" required style="width:100%;" />
+                <input type="text" name="customerName" value="${custName}" required style="width:100%;" />
               </div>
 
               <div>
                 <label style="font-size:0.82rem; font-weight:800; display:block; margin-bottom:4px;">${this.t('رقم الهاتف (للتواصل وتأكيد الطلب)', 'Phone Number (Required)')} *</label>
-                <input type="tel" name="phone" value="${u.phone}" required style="width:100%; direction:ltr; text-align:${s.lang === 'ar' ? 'right' : 'left'};" />
+                <input type="tel" name="phone" value="${custPhone}" required style="width:100%; direction:ltr; text-align:${s.lang === 'ar' ? 'right' : 'left'};" />
               </div>
 
               <div>
@@ -2864,6 +2956,35 @@ class ChefApp {
           scheduledSlot: schedSlot,
           notes: `${timingStr}${formData.get('notes') ? ' - ' + formData.get('notes') : ''}`
         };
+
+        // Prepare backend order payload
+        const cartItems = store.state.cart.map((it) => ({
+          menuItemId: it.product.id,
+          quantity: it.quantity,
+          unitPrice: it.unitPrice
+        }));
+
+        // Send to backend API asynchronously (supports logged in clients & guests)
+        api
+          .createOrder({
+            customerName: orderData.name,
+            customerPhone: orderData.phone,
+            deliveryAddressSnapshot: orderData.address,
+            totalAmount: store.getCartTotal(),
+            paymentMethod: 'CASH_ON_DELIVERY',
+            notes: orderData.notes,
+            items: cartItems
+          })
+          .then((backendOrder) => {
+            if (backendOrder) {
+              adminPortal.adminOrders.unshift(backendOrder);
+              adminPortal.playNotificationSound();
+            }
+          })
+          .catch(() => {
+            // graceful offline fallback
+          });
+
         store.placeOrder(orderData);
       });
     }
@@ -2885,6 +3006,58 @@ class ChefApp {
         if (order) {
           store.openModal('orderDetails', order);
         }
+      });
+    });
+
+    // Client Authentication Modal Triggers
+    const clientAuthBtn = document.getElementById('btn-open-client-auth');
+    if (clientAuthBtn) {
+      clientAuthBtn.addEventListener('click', () => {
+        if (store.state.clientUser) {
+          store.setActiveTab('profile');
+        } else {
+          store.openModal('clientAuth');
+        }
+      });
+    }
+
+    const profileLoginBannerBtn = document.getElementById('btn-profile-login-banner');
+    if (profileLoginBannerBtn) {
+      profileLoginBannerBtn.addEventListener('click', () => {
+        store.openModal('clientAuth');
+      });
+    }
+
+    const checkoutSwitchLoginBtn = document.getElementById('btn-checkout-switch-login');
+    if (checkoutSwitchLoginBtn) {
+      checkoutSwitchLoginBtn.addEventListener('click', () => {
+        store.openModal('clientAuth');
+      });
+    }
+
+    // Client Logout
+    const clientLogoutBtn = document.getElementById('btn-client-logout');
+    if (clientLogoutBtn) {
+      clientLogoutBtn.addEventListener('click', () => {
+        api.clientLogout();
+        store.logoutClient();
+        store.showToast(this.t('تم تسجيل الخروج بنجاح 👋', 'Signed out successfully 👋'), 'info');
+      });
+    }
+
+    // Bind Client Auth Modal internal events if open
+    if (store.state.activeModal?.type === 'clientAuth') {
+      clientAuthModal.bindEvents();
+    }
+
+    // Admin Route Triggers (from footer or elsewhere)
+    document.querySelectorAll('a[href="#admin"], [data-nav="admin"]').forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        store.state.currentRoute = 'admin';
+        window.location.hash = '#admin';
+        adminPortal.loadData();
+        this.render();
       });
     });
 
@@ -2954,6 +3127,77 @@ class ChefApp {
         store.openModal('chefStory');
       });
     }
+  }
+
+  // =========================================================================
+  // ADMIN AUTH & DASHBOARD EVENT BINDINGS
+  // =========================================================================
+  bindAdminLoginEvents() {
+    const form = document.getElementById('admin-login-form');
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const identifier = document.getElementById('admin-login-id')?.value.trim();
+        const password = document.getElementById('admin-login-password')?.value;
+        const submitBtn = document.getElementById('btn-submit-admin-login');
+
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerText = 'جاري التحقق من الصلاحيات...';
+        }
+
+        try {
+          const res = await api.adminLogin(identifier, password);
+          store.setAdminUser(res.admin || { fullName: 'Super Admin', role: 'SUPER_ADMIN' });
+          await adminPortal.loadData();
+          store.showToast(store.state.lang === 'ar' ? 'تم تسجيل دخول لوحة التحكم بنجاح 👑' : 'Admin logged in 👑', 'success');
+          this.render();
+        } catch (err) {
+          store.showToast(err.message || 'بيانات الدخول غير صحيحة', 'warn');
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerText = '🔐 تسجيل الدخول للوحة التحكم';
+          }
+        }
+      });
+    }
+
+    const backLink = document.getElementById('link-back-to-store');
+    if (backLink) {
+      backLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        store.state.currentRoute = 'storefront';
+        window.location.hash = '';
+        this.render();
+      });
+    }
+  }
+
+  bindAdminDashboardEvents() {
+    // Top bar actions
+    const logoutBtn = document.getElementById('btn-admin-logout');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', () => {
+        api.adminLogout();
+        store.logoutAdmin();
+        store.state.currentRoute = 'storefront';
+        window.location.hash = '';
+        store.showToast(store.state.lang === 'ar' ? 'تم تسجيل الخروج من لوحة التحكم' : 'Admin logged out', 'info');
+        this.render();
+      });
+    }
+
+    const viewStoreBtn = document.getElementById('btn-admin-view-store');
+    if (viewStoreBtn) {
+      viewStoreBtn.addEventListener('click', () => {
+        store.state.currentRoute = 'storefront';
+        window.location.hash = '';
+        this.render();
+      });
+    }
+
+    // Delegate dashboard events to adminPortal
+    adminPortal.bindEvents();
   }
 
   recalculateModalTotal(qty = 1) {

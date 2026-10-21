@@ -3188,3 +3188,565 @@ html[dir="ltr"] .footer-heading::after {
   color: #F57F17;
   border: 1px solid #FFE082;
 }
+
+/* ==========================================================================
+   26. CLIENT ZERO-FRICTION AUTH MODAL (No OTP / No SMS)
+   ========================================================================== */
+.client-auth-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.client-auth-card {
+  background: #18120D;
+  border: 1.5px solid rgba(245, 122, 33, 0.35);
+  border-radius: var(--radius-xl);
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  color: #FFF;
+  overflow: hidden;
+}
+
+.client-auth-header {
+  padding: 20px 24px 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.client-auth-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: #FFF;
+}
+
+.client-auth-close {
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: #CCC;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.client-auth-close:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #FFF;
+}
+
+.client-auth-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: rgba(0, 0, 0, 0.25);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.client-auth-tab-btn {
+  padding: 12px;
+  background: none;
+  border: none;
+  color: #A89B8D;
+  font-weight: 800;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-bottom: 2px solid transparent;
+}
+
+.client-auth-tab-btn.active {
+  color: #FFA35C;
+  border-bottom-color: var(--color-primary);
+  background: rgba(245, 122, 33, 0.08);
+}
+
+.client-auth-body {
+  padding: 22px 24px 26px;
+}
+
+.auth-form-group {
+  margin-bottom: 16px;
+}
+
+.auth-form-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #D6C8B8;
+  margin-bottom: 6px;
+}
+
+.auth-form-input {
+  width: 100%;
+  background: #241A13;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #FFF;
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 0.92rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.auth-form-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(245, 122, 33, 0.2);
+}
+
+.auth-submit-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--color-primary) 0%, #D86313 100%);
+  color: #FFF;
+  border: none;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.98rem;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(245, 122, 33, 0.4);
+  transition: all 0.2s;
+  margin-top: 8px;
+}
+
+.auth-submit-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(245, 122, 33, 0.55);
+}
+
+.auth-hint-text {
+  font-size: 0.76rem;
+  color: #9C8F82;
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   27. PRODUCTION ADMIN DASHBOARD (/admin)
+   ========================================================================== */
+.admin-portal-wrapper {
+  background: #0E0A07;
+  min-height: 100vh;
+  color: #E6DFD5;
+  font-family: inherit;
+  direction: rtl;
+}
+
+.admin-top-bar {
+  background: #17100B;
+  border-bottom: 1.5px solid rgba(245, 122, 33, 0.3);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 500;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.admin-logo-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-logo-badge {
+  background: rgba(245, 122, 33, 0.15);
+  border: 1px solid rgba(245, 122, 33, 0.4);
+  color: #FFA35C;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.admin-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-action-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #FFF;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s;
+}
+
+.admin-action-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.admin-main-layout {
+  display: flex;
+  flex-direction: column;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 20px 16px;
+}
+
+.admin-tabs-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 14px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  scrollbar-width: none;
+}
+
+.admin-tabs-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.admin-nav-tab {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #CFC2B4;
+  padding: 10px 18px;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.admin-nav-tab.active {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #D86313 100%);
+  border-color: var(--color-primary);
+  color: #FFF;
+  box-shadow: 0 4px 14px rgba(245, 122, 33, 0.35);
+}
+
+/* Orders Dashboard */
+.admin-orders-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.admin-status-filters {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.admin-filter-pill {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #DDD;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+}
+
+.admin-filter-pill.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #FFF;
+}
+
+.admin-orders-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 900px) {
+  .admin-orders-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.admin-order-card {
+  background: #18120D;
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  transition: border-color 0.2s;
+}
+
+.admin-order-card.status-pending {
+  border-color: rgba(245, 122, 33, 0.5);
+  background: linear-gradient(145deg, #1C140E 0%, #16100B 100%);
+}
+
+.admin-order-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+}
+
+.admin-order-num {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #FFA35C;
+}
+
+.admin-status-badge {
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.status-badge-pending {
+  background: rgba(245, 122, 33, 0.2);
+  color: #FFA35C;
+  border: 1px solid rgba(245, 122, 33, 0.4);
+}
+
+.status-badge-preparing {
+  background: rgba(59, 130, 246, 0.2);
+  color: #93C5FD;
+  border: 1px solid rgba(59, 130, 246, 0.4);
+}
+
+.status-badge-out {
+  background: rgba(168, 85, 247, 0.2);
+  color: #D8B4FE;
+  border: 1px solid rgba(168, 85, 247, 0.4);
+}
+
+.status-badge-completed {
+  background: rgba(34, 197, 94, 0.2);
+  color: #86EFAC;
+  border: 1px solid rgba(34, 197, 94, 0.4);
+}
+
+.status-badge-cancelled {
+  background: rgba(239, 68, 68, 0.2);
+  color: #FCA5A5;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.admin-order-details {
+  font-size: 0.84rem;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.admin-order-customer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+  font-weight: 800;
+  color: #FFF;
+}
+
+.admin-order-phone {
+  color: #FFA35C;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.admin-order-address {
+  color: #CFC2B4;
+  margin-bottom: 8px;
+}
+
+.admin-order-items-list {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  margin-bottom: 12px;
+}
+
+.admin-order-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 0.82rem;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+.admin-order-item-row:last-child {
+  border-bottom: none;
+}
+
+.admin-order-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.admin-order-total {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #FFF;
+}
+
+.admin-order-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.admin-btn-action-status {
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.admin-btn-action-status:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* Menu Items Management Table */
+.admin-table-card {
+  background: #18120D;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: start;
+}
+
+.admin-table th {
+  background: rgba(255, 255, 255, 0.04);
+  color: #FFA35C;
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.admin-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.84rem;
+}
+
+.admin-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.admin-dish-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+}
+
+.admin-availability-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.74rem;
+  font-weight: 800;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s;
+}
+
+.admin-availability-toggle.available {
+  background: rgba(34, 197, 94, 0.2);
+  color: #86EFAC;
+  border: 1px solid rgba(34, 197, 94, 0.4);
+}
+
+.admin-availability-toggle.unavailable {
+  background: rgba(239, 68, 68, 0.2);
+  color: #FCA5A5;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+/* Admin Login Modal / View */
+.admin-login-backdrop {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, #261A13 0%, #0E0A07 100%);
+  padding: 20px;
+}
+
+.admin-login-card {
+  background: #17110C;
+  border: 1.5px solid rgba(245, 122, 33, 0.4);
+  border-radius: var(--radius-xl);
+  padding: 36px 32px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  text-align: center;
+}
+
+.admin-login-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  background: rgba(245, 122, 33, 0.15);
+  border: 1px solid rgba(245, 122, 33, 0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+}
+

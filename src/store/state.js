@@ -8,6 +8,8 @@ const STORAGE_KEYS = {
   WISHLIST: 'chef_fergany_wishlist_v1',
   ORDERS: 'chef_fergany_orders_v1',
   USER: 'chef_fergany_user_v1',
+  CLIENT_USER: 'chef_fergany_client_user_v1',
+  ADMIN_USER: 'chef_fergany_admin_user_v1',
   LANG: 'chef_fergany_lang_v1',
   FULFILLMENT: 'chef_fergany_fulfillment_v1',
   REVIEWS: 'chef_fergany_reviews_v1'
@@ -91,6 +93,11 @@ class StateStore {
         landmark: 'بجوار مدرسة الزهراء',
         notes: 'الرجاء رن الجرس والتسليم على الباب'
       }),
+      clientUser: this.loadStorage(STORAGE_KEYS.CLIENT_USER, null),
+      adminUser: this.loadStorage(STORAGE_KEYS.ADMIN_USER, null),
+      currentRoute: window.location.hash.startsWith('#admin') ? 'admin' : 'storefront',
+      adminTab: 'orders', // 'orders' | 'menu' | 'categories' | 'customers'
+      adminSoundEnabled: true,
       deliveryTiming: 'asap', // 'asap' | 'scheduled'
       scheduledDate: '',
       scheduledTime: '',
@@ -535,6 +542,69 @@ class StateStore {
     this.closeModal();
     this.notify();
     return newReview;
+  }
+
+  // Client Auth Management
+  setClientUser(clientUser) {
+    this.state.clientUser = clientUser;
+    this.saveStorage(STORAGE_KEYS.CLIENT_USER, clientUser);
+    if (clientUser && clientUser.phone) {
+      this.state.user.name = clientUser.fullName || this.state.user.name;
+      this.state.user.phone = clientUser.phone;
+      this.saveStorage(STORAGE_KEYS.USER, this.state.user);
+    }
+    this.notify();
+  }
+
+  logoutClient() {
+    this.state.clientUser = null;
+    this.saveStorage(STORAGE_KEYS.CLIENT_USER, null);
+    localStorage.removeItem('chef_auth_token');
+    this.showToast(this.state.lang === 'ar' ? 'تم تسجيل الخروج بنجاح' : 'Logged out successfully', 'info');
+    this.notify();
+  }
+
+  // Admin Auth Management
+  setAdminUser(adminUser) {
+    this.state.adminUser = adminUser;
+    this.saveStorage(STORAGE_KEYS.ADMIN_USER, adminUser);
+    this.notify();
+  }
+
+  logoutAdmin() {
+    this.state.adminUser = null;
+    this.saveStorage(STORAGE_KEYS.ADMIN_USER, null);
+    localStorage.removeItem('chef_admin_token');
+    this.state.currentRoute = 'storefront';
+    window.location.hash = '';
+    this.showToast(this.state.lang === 'ar' ? 'تم تسجيل خروج الأدمن' : 'Admin logged out', 'info');
+    this.notify();
+  }
+
+  setCurrentRoute(route) {
+    this.state.currentRoute = route;
+    if (route === 'admin') {
+      window.location.hash = '#admin';
+    } else {
+      window.location.hash = '';
+    }
+    this.notify();
+  }
+
+  setAdminTab(tab) {
+    this.state.adminTab = tab;
+    this.notify();
+  }
+
+  toggleAdminSound() {
+    this.state.adminSoundEnabled = !this.state.adminSoundEnabled;
+    this.showToast(
+      this.state.adminSoundEnabled
+        ? (this.state.lang === 'ar' ? 'تم تفعيل التنبيهات الصوتية للطلبات' : 'Sound notifications enabled')
+        : (this.state.lang === 'ar' ? 'تم كتم التنبيهات الصوتية' : 'Sound notifications muted'),
+      'info'
+    );
+    this.notify();
   }
 }
 

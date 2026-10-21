@@ -1,0 +1,138 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  CLIENT
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  PREPARING
+  OUT_FOR_DELIVERY
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  CASH_ON_DELIVERY
+}
+
+model User {
+  id            String    @id @default(uuid())
+  role          Role      @default(CLIENT)
+  fullName      String
+  phone         String    @unique
+  email         String?   @unique
+  password_hash String
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  addresses     Address[]
+  orders        Order[]
+
+  @@index([phone])
+  @@map("users")
+}
+
+model Address {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title        String   @default("المنزل")
+  city         String   @default("الجيزة")
+  area         String
+  street       String
+  buildingNo   String?
+  floorNo      String?
+  apartmentNo  String?
+  notes        String?
+  isDefault    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([userId])
+  @@map("addresses")
+}
+
+model Category {
+  id         String     @id @default(uuid())
+  name_ar    String
+  name_en    String
+  slug       String     @unique
+  orderIndex Int        @default(0)
+  isActive   Boolean    @default(true)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  menuItems  MenuItem[]
+
+  @@index([orderIndex])
+  @@map("categories")
+}
+
+model MenuItem {
+  id             String      @id @default(uuid())
+  categoryId     String
+  category       Category    @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  title_ar       String
+  title_en       String
+  description_ar String
+  description_en String
+  price          Decimal     @db.Decimal(10, 2)
+  imageUrl       String
+  isAvailable    Boolean     @default(true)
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  orderItems     OrderItem[]
+
+  @@index([categoryId])
+  @@index([isAvailable])
+  @@map("menu_items")
+}
+
+model Order {
+  id                      String        @id @default(uuid())
+  orderNumber             Int           @default(autoincrement())
+  userId                  String?
+  user                    User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  status                  OrderStatus   @default(PENDING)
+  totalAmount             Decimal       @db.Decimal(10, 2)
+  paymentMethod           PaymentMethod @default(CASH_ON_DELIVERY)
+  customerName            String
+  customerPhone           String
+  deliveryAddressSnapshot String        @db.Text
+  notes                   String?       @db.Text
+  createdAt               DateTime      @default(now())
+  updatedAt               DateTime      @updatedAt
+
+  items                   OrderItem[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([orderNumber])
+  @@map("orders")
+}
+
+model OrderItem {
+  id         String   @id @default(uuid())
+  orderId    String
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuItemId String
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Restrict)
+  quantity   Int      @default(1)
+  unitPrice  Decimal  @db.Decimal(10, 2)
+
+  @@index([orderId])
+  @@index([menuItemId])
+  @@map("order_items")
+}
