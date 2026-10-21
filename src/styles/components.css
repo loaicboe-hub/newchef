@@ -147,6 +147,9 @@
   position: relative;
   width: 100%;
   cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y;
 }
 
 .top-bar-marquee-strip .marquee-track {

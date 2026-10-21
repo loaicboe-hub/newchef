@@ -376,7 +376,7 @@ class ChefApp {
         </div>
 
         <!-- Mobile Full Announcement Marquee Ribbon -->
-        <div class="top-bar-marquee-strip">
+        <div class="top-bar-marquee-strip" title="${fullNoticeText}">
           <div class="marquee-track">
             <span class="marquee-item"><bdi dir="${s.lang === 'ar' ? 'rtl' : 'ltr'}">📍 ${fullNoticeText}</bdi></span>
             <span class="marquee-item"><bdi dir="${s.lang === 'ar' ? 'rtl' : 'ltr'}">📍 ${fullNoticeText}</bdi></span>
