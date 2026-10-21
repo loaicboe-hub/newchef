@@ -1723,36 +1723,36 @@ class ChefApp {
 
     return `
       <nav class="bottom-nav-bar">
+        <!-- 1. الرئيسية (Home) [Rightmost in RTL] -->
         <button class="nav-tab-btn ${s.activeTab === 'home' && s.selectedCategory !== 'offers' ? 'active' : ''}" data-nav="home">
           <span class="nav-icon">🏠</span>
           <span class="nav-label">${this.t('الرئيسية', 'Home')}</span>
         </button>
 
-        <button class="nav-tab-btn" data-nav="catalog">
+        <!-- 2. قائمة الأطباق (Menu) -->
+        <button class="nav-tab-btn ${s.activeTab === 'catalog' ? 'active' : ''}" data-nav="catalog">
           <span class="nav-icon">🍽️</span>
           <span class="nav-label">${this.t('قائمة الأطباق', 'Menu')}</span>
         </button>
 
-        <!-- Floating Center Cart Icon -->
-        <button class="nav-cart-btn ${s.activeTab === 'cart' ? 'active' : ''}" data-nav="cart" title="${this.t('سلة المشتريات', 'Shopping Cart')}">
-          <span class="cart-icon">🛒</span>
-          ${count > 0 ? `<span class="nav-cart-badge">${count}</span>` : ''}
-        </button>
+        <!-- 3. السلة (Cart FAB) — Perfectly centered elevated middle slot -->
+        <div class="nav-cart-slot">
+          <button class="nav-cart-btn ${s.activeTab === 'cart' ? 'active' : ''}" data-nav="cart" title="${this.t('سلة المشتريات', 'Shopping Cart')}">
+            <span class="cart-icon">🛒</span>
+            ${count > 0 ? `<span class="nav-cart-badge">${count}</span>` : ''}
+          </button>
+        </div>
 
+        <!-- 4. العروض المميزة (Offers) -->
         <button class="nav-tab-btn ${s.activeTab === 'home' && s.selectedCategory === 'offers' ? 'active' : ''}" data-nav="offers">
           <span class="nav-icon">🔥</span>
           <span class="nav-label">${this.t('العروض المميزة', 'Offers')}</span>
         </button>
 
+        <!-- 5. حسابي (My Account) [Leftmost in RTL] -->
         <button class="nav-tab-btn ${s.activeTab === 'profile' || s.activeTab === 'orders' ? 'active' : ''}" data-nav="profile">
           <span class="nav-icon">👤</span>
-          <span class="nav-label">${this.t('حسابي', 'Profile')}</span>
-        </button>
-
-        <!-- Dedicated Language Toggle in Bottom Navigation Bar -->
-        <button class="nav-tab-btn" data-action="toggle-lang" title="${this.t('تغيير لغة الموقع', 'Switch Website Language')}">
-          <span class="nav-icon">🌐</span>
-          <span class="nav-label" style="font-weight:900; color:var(--color-primary);">${s.lang === 'ar' ? 'English' : 'عربي'}</span>
+          <span class="nav-label">${this.t('حسابي', 'My Account')}</span>
         </button>
       </nav>
     `;
