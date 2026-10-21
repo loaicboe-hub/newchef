@@ -59,6 +59,21 @@ class ChefApp {
         store.closeModal();
       }
     });
+
+    // Delegated Global Handler for Language Switching (Instant & Touch Resilient on Mobile & Desktop)
+    let lastLangToggle = 0;
+    document.addEventListener('click', (e) => {
+      const toggle = e.target.closest('#btn-lang-toggle, #btn-lang-toggle-mobile, .mobile-lang-btn, .top-bar-lang-btn, #menu-lang-switch, [data-action="toggle-lang"]');
+      if (toggle) {
+        e.preventDefault();
+        e.stopPropagation();
+        const now = Date.now();
+        if (now - lastLangToggle < 350) return; // Debounce rapid double-taps
+        lastLangToggle = now;
+        const newLang = store.state.lang === 'ar' ? 'en' : 'ar';
+        store.setLang(newLang);
+      }
+    });
   }
 
   // Translation helper
@@ -338,20 +353,25 @@ class ChefApp {
           <div class="top-bar-inner">
             <div class="top-bar-notice">
               <span class="tag-badge">🔥 ${this.t('توصيل حراري فوري', 'Express Delivery')}</span>
-              <span>${this.t(
+              <span class="notice-desc-desktop">${this.t(
                 'مطابخ الشيف فرجاني | أجود أنواع اللحوم البلدي 100% والمأكولات الجاهزة للتسوية | فرع الهرم: شارع العروبة متفرع من ترسا والمريوطية',
                 'Chef Fergany Kitchens | 100% Baladi Meat & Ready-to-Cook Delicacies | Haram Branch: Orouba St.'
+              )}</span>
+              <span class="notice-desc-mobile">${this.t(
+                'مطابخ الشيف فرجاني | لحوم بلدي 100%',
+                'Chef Fergany | 100% Baladi Meat'
               )}</span>
             </div>
 
             <div class="top-bar-actions">
-              <a href="#admin" class="top-bar-admin-btn" style="color:#FFA35C; font-size:0.76rem; font-weight:800; text-decoration:none; margin-inline-end:14px; display:inline-flex; align-items:center; gap:5px;">
+              <a href="#admin" class="top-bar-admin-btn" title="${this.t('لوحة الإدارة', 'Admin Portal')}">
                 <span>👑</span>
-                <span>${this.t('لوحة الإدارة', 'Admin Portal')}</span>
+                <span>${this.t('الإدارة', 'Admin')}</span>
               </a>
 
-              <button class="top-bar-lang-btn" id="btn-lang-toggle" title="${this.t('تغيير اللغة', 'Switch Language')}">
-                ${s.lang === 'ar' ? 'English' : 'عربي'}
+              <button class="top-bar-lang-btn" id="btn-lang-toggle" data-action="toggle-lang" title="${this.t('تغيير اللغة', 'Switch Language')}">
+                <span class="lang-icon">🌐</span>
+                <span class="lang-text">${s.lang === 'ar' ? 'English' : 'عربي'}</span>
               </button>
             </div>
           </div>
@@ -459,9 +479,9 @@ class ChefApp {
 
               <div class="mobile-header-actions">
                 <!-- 1. Dedicated & Prominent Language Toggle with Globe Icon -->
-                <button class="mobile-lang-btn" id="btn-lang-toggle-mobile" title="${this.t('تغيير لغة الموقع', 'Switch Website Language')}">
+                <button class="mobile-lang-btn" id="btn-lang-toggle-mobile" data-action="toggle-lang" title="${this.t('تغيير لغة الموقع', 'Switch Website Language')}">
                   <span class="lang-icon">🌐</span>
-                  <span class="lang-text">${s.lang === 'ar' ? 'EN' : 'عربي'}</span>
+                  <span class="lang-text">${s.lang === 'ar' ? 'English' : 'عربي'}</span>
                 </button>
 
                 <!-- 2. Compact Branch Selector -->
@@ -2469,19 +2489,7 @@ class ChefApp {
       }
     });
 
-    // Language Toggle buttons
-    const langBtns = [
-      document.getElementById('btn-lang-toggle'),
-      document.getElementById('btn-lang-toggle-mobile')
-    ];
-    langBtns.forEach((btn) => {
-      if (btn) {
-        btn.addEventListener('click', () => {
-          const newLang = store.state.lang === 'ar' ? 'en' : 'ar';
-          store.setLang(newLang);
-        });
-      }
-    });
+    // Language Toggle is handled robustly via global delegated event listener in bindGlobalEvents()
 
     // Search Inputs: Desktop & Mobile
     const desktopSearch = document.getElementById('desktop-search-input');
@@ -3109,12 +3117,7 @@ class ChefApp {
       });
     }
 
-    const menuLangSwitch = document.getElementById('menu-lang-switch');
-    if (menuLangSwitch) {
-      menuLangSwitch.addEventListener('click', () => {
-        store.setLang(store.state.lang === 'ar' ? 'en' : 'ar');
-      });
-    }
+    // menu-lang-switch is handled by global delegated event listener in bindGlobalEvents()
 
     const menuBranchInfo = document.getElementById('menu-branch-info');
     if (menuBranchInfo) {

@@ -77,25 +77,63 @@
 
 .top-bar-link.whatsapp-link:hover {
   background: #146c35;
-  opacity: 1;
+}
+
+.notice-desc-mobile {
+  display: none;
+}
+
+.notice-desc-desktop {
+  display: inline;
+}
+
+.top-bar-admin-btn {
+  color: #FFFFFF !important;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-decoration: none;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all var(--transition-fast);
+  margin-inline-end: 8px;
+}
+
+.top-bar-admin-btn:hover {
+  background: rgba(0, 0, 0, 0.32);
+  color: #FFFFFF !important;
 }
 
 .top-bar-lang-btn {
-  background: rgba(255, 255, 255, 0.22);
-  color: #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  padding: 2px 10px;
-  border-radius: var(--radius-full);
-  font-size: 0.72rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.top-bar-lang-btn:hover {
   background: #FFFFFF;
   color: var(--color-primary);
-  border-color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  padding: 3px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.76rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all var(--transition-fast);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  touch-action: manipulation;
+}
+
+.top-bar-lang-btn:hover,
+.top-bar-lang-btn:active {
+  background: #FFF4EB;
+  color: var(--color-primary-hover);
+  transform: scale(1.02);
+}
+
+.top-bar-lang-btn * {
+  pointer-events: none;
 }
 
 /* ==========================================================================
@@ -428,6 +466,10 @@ html[dir="ltr"] .desktop-search-icon {
 .mobile-lang-btn .lang-icon {
   font-size: 0.92rem;
   line-height: 1;
+}
+
+.mobile-lang-btn * {
+  pointer-events: none;
 }
 
 /* Compact Branch Pill on Mobile */
