@@ -310,10 +310,7 @@ class ChefApp {
     }
 
     this.appRoot.innerHTML = `
-      <!-- 1. TOP UTILITY BAR (Desktop & Tablet) -->
-      ${this.renderSiteTopBar()}
-
-      <!-- 2. SITE MAIN HEADER (Desktop & Mobile) -->
+      <!-- 1. SITE MAIN HEADER (Desktop & Mobile) -->
       ${this.renderSiteHeader()}
 
       <!-- 3. MAIN CONTENT BODY (Full-width Responsive Container) -->
@@ -343,42 +340,10 @@ class ChefApp {
   }
 
   // =========================================================================
-  // 1. TOP UTILITY BAR (Desktop & Tablet)
+  // 1. TOP UTILITY BAR (Disabled / Cleaned up per user request)
   // =========================================================================
   renderSiteTopBar() {
-    const s = store.state;
-    const fullNoticeText = this.t(
-      'مطابخ الشيف فرجاني | أجود أنواع اللحوم البلدي 100% والمأكولات الجاهزة للتسوية | فرع الهرم: شارع العروبة متفرع من ترسا والمريوطية',
-      'Chef Fergany Kitchens | 100% Baladi Meat & Ready-to-Cook Delicacies | Haram Branch: Orouba St. off Tersa & Maryouteya'
-    );
-
-    return `
-      <div class="site-top-bar">
-        <div class="site-container">
-          <div class="top-bar-inner">
-            <div class="top-bar-notice">
-              <span class="tag-badge">🔥 ${this.t('توصيل حراري فوري', 'Express Delivery')}</span>
-              <span class="notice-desc-desktop">${fullNoticeText}</span>
-            </div>
-
-            <div class="top-bar-actions">
-              <button class="top-bar-lang-btn" id="btn-lang-toggle" data-action="toggle-lang" title="${this.t('تغيير اللغة', 'Switch Language')}">
-                <span class="lang-icon">🌐</span>
-                <span class="lang-text">${s.lang === 'ar' ? 'English' : 'عربي'}</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Mobile Full Announcement Marquee Ribbon -->
-        <div class="top-bar-marquee-strip" title="${fullNoticeText}">
-          <div class="marquee-track">
-            <span class="marquee-item"><bdi dir="${s.lang === 'ar' ? 'rtl' : 'ltr'}">📍 ${fullNoticeText}</bdi></span>
-            <span class="marquee-item"><bdi dir="${s.lang === 'ar' ? 'rtl' : 'ltr'}">📍 ${fullNoticeText}</bdi></span>
-          </div>
-        </div>
-      </div>
-    `;
+    return '';
   }
 
   // =========================================================================
@@ -448,6 +413,12 @@ class ChefApp {
 
             <!-- Desktop Action Buttons -->
             <div class="desktop-actions-group">
+              <!-- Desktop Language Toggle -->
+              <button class="desktop-action-btn" id="btn-lang-toggle" data-action="toggle-lang" title="${this.t('تغيير اللغة', 'Switch Language')}">
+                <span>🌐</span>
+                <span>${s.lang === 'ar' ? 'English' : 'عربي'}</span>
+              </button>
+
               <button class="desktop-action-btn" id="btn-open-client-auth" title="${s.clientUser ? s.clientUser.fullName : this.t('تسجيل الدخول', 'Login')}">
                 <span>${s.clientUser ? '👤' : '🔑'}</span>
                 <span>${s.clientUser ? s.clientUser.fullName.split(' ')[0] : this.t('دخول / تسجيل', 'Sign In')}</span>

@@ -20,93 +20,10 @@
     display: none !important;
   }
 
-  /* 1. Show mobile top utility bar with prominent language switcher */
-  .site-top-bar {
-    display: block !important;
-    background: linear-gradient(90deg, #E8641B 0%, #F57A21 100%) !important;
-    color: #FFFFFF !important;
-    position: relative;
-    z-index: 60;
-  }
-
-  .site-top-bar .site-container {
-    padding-left: 10px;
-    padding-right: 10px;
-    max-width: 100%;
-  }
-
-  .site-top-bar .top-bar-inner {
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-  }
-
-  .site-top-bar .top-bar-notice {
-    font-size: 0.70rem;
-    font-weight: 700;
-    max-width: 50%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .site-top-bar .notice-desc-desktop {
-    display: none !important;
-  }
-
-  .site-top-bar .notice-desc-mobile {
-    display: inline !important;
-  }
-
-  .site-top-bar .top-bar-actions {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-shrink: 0;
-  }
-
-  .site-top-bar .top-bar-lang-btn {
-    padding: 4px 10px !important;
-    font-size: 0.74rem !important;
-    font-weight: 800 !important;
-    background: #FFFFFF !important;
-    color: var(--color-primary) !important;
-    border-radius: var(--radius-full) !important;
-    border: none !important;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15) !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 4px !important;
-    cursor: pointer !important;
-    touch-action: manipulation;
-  }
-
-  .site-top-bar .top-bar-lang-btn * {
-    pointer-events: none;
-  }
-
-  .site-top-bar .top-bar-admin-btn {
-    font-size: 0.70rem !important;
-    font-weight: 800 !important;
-    padding: 3px 8px !important;
-    color: #FFFFFF !important;
-    background: rgba(0, 0, 0, 0.22) !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    border-radius: var(--radius-full) !important;
-    text-decoration: none !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 3px !important;
-  }
-
-  /* Full notice continuous marquee ribbon on mobile */
+  /* Top Announcement Bar completely removed per user request */
+  .site-top-bar,
   .top-bar-marquee-strip {
-    display: flex !important;
+    display: none !important;
   }
 
   /* Show mobile header and bottom bar */
@@ -452,10 +369,7 @@
     display: none !important;
   }
 
-  /* Show desktop header and utility bar */
-  .site-top-bar {
-    display: block !important;
-  }
+  /* Desktop header */
 
   .desktop-header-inner {
     display: flex !important;
@@ -497,10 +411,7 @@
     display: none !important;
   }
 
-  /* Show desktop header and utility bar */
-  .site-top-bar {
-    display: block !important;
-  }
+  /* Desktop header */
 
   .desktop-header-inner {
     display: flex !important;

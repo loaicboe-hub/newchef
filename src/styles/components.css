@@ -4,13 +4,7 @@
    1. SITE TOP UTILITY BAR (Desktop & Tablet)
    ========================================================================== */
 .site-top-bar {
-  background: linear-gradient(90deg, #FFA35C 0%, #FF8D36 100%);
-  color: #FFFFFF;
-  font-size: 0.78rem;
-  border-bottom: 1px solid rgba(223, 104, 20, 0.25);
-  position: relative;
-  z-index: 60;
-  box-shadow: 0 1px 4px rgba(245, 122, 33, 0.15);
+  display: none !important;
 }
 
 .top-bar-inner {
